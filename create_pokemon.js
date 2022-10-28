@@ -4,7 +4,7 @@ const db = new sqlite3.Database('test2.db');
 let schema = `
 create table pokemon(
   id integer primary key,
-  number integer ,
+  number integer NOT NULL,
   name text NOT NULL,
   attack integer NOT NULL,
   defence integer NOT NULL,
