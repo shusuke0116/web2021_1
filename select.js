@@ -2,7 +2,7 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('test2.db');
 
 let sql = `
-select * from pokemon;
+select p.number,p.name,type.name as type1,p.type2 from (select pokemon.number,pokemon.name,pokemon.type1_id,type.name as type2 from pokemon inner join type on pokemon.type2_id = type.id) as p inner join type on p.type1_id = type.id;
 `
 
 db.serialize( () => {
@@ -12,7 +12,7 @@ db.serialize( () => {
 			return;
 		}
 		for( let data of row ) {
-			console.log(data.number + ' : ' + data.name + ' : ' + data.attack + ' : ' + data.defence + ' : ' + data.hp + ' : ' + data.type1_id + ' : ' + data.type2_id );
+			console.log('No.' + data.number + ' : ' + data.name + ' : ' + data.type1 + ' ・ ' + data.type2);
 		}
 	});
 });

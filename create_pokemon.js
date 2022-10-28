@@ -11,7 +11,6 @@ create table pokemon(
   hp integer NOT NULL,
   type1_id integer NOT NULL,
   type2_id integer
-  
 );
 `
 

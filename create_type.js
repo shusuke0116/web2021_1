@@ -4,7 +4,7 @@ const db = new sqlite3.Database('test2.db');
 let schema = `
 create table type(
   id integer primary key,
-  nmae text NOT NULL
+  name text NOT NULL
 );
 `
 
