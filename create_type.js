@@ -2,16 +2,9 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('test2.db');
 
 let schema = `
-create table pokemon(
+create table type(
   id integer primary key,
-  number integer ,
-  name text NOT NULL,
-  attack integer NOT NULL,
-  defence integer NOT NULL,
-  hp integer NOT NULL,
-  type1_id integer NOT NULL,
-  type2_id integer
-  
+  nmae text NOT NULL
 );
 `
 
