@@ -1,0 +1,34 @@
+<!Doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>pokemon一覧</title>
+</head>
+<body>
+  <h2>pokemon一覧</h2>  
+  <form action="/pokemon">
+    <input type="checkbox" name="order" id="order">
+    <label for="name">名前順</label>
+    <input type="checkbox" name="desc" id="desc">
+    <label for="desc">降順</label>
+    <input type="number" name="pop" id="pop" size="3">
+    <label for="pop">表示数</label>
+    <input type="submit" value="並び替え"><br>
+    タイプ：<input type=text" name="type" id="type">
+    <input type="submit" value="絞り込み"><br>
+  </form>
+  <table>
+      <% for( let row of data ) { %>
+        <tr>
+            <td><%= row.number %></td>
+            <td><%= row.name %></td>
+            <td><%= row.type1 %></td>
+            <% if( row.type2 != null ){ %>
+              <td><%= row.type2 %></td>
+            <% } %>
+        </tr>
+      <% } %>
+  </table>
+  <a href="/">top page</a>
+</body>
+</html>
