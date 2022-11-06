@@ -11,7 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   const message = "top page";
-  res.render('show', {mes:message});
+  res.render('toppage', {mes:message});
 });
 
 app.get("/pokemon", (req, res) => {
@@ -38,6 +38,22 @@ app.get("/pokemon", (req, res) => {
     })
 })
 
+app.get("/pokemon/status", (req, res) => {
+    //console.log(req.query.pop);    // ①
+    
+    let sql = "select p.id,p.number,p.name,p.attack,p.defence,p.hp,type.name as type1,p.type2 from (select pokemon.id,pokemon.number,pokemon.name,pokemon.attack,pokemon.defence,pokemon.hp,pokemon.type1_id,type.name as type2 from pokemon left join type on pokemon.type2_id = type.id) as p inner join type on p.type1_id = type.id;";
+    //console.log(sql);    // ②
+    db.serialize( () => {
+        db.all(sql, (error, data) => {
+            if( error ) {
+                res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            res.render('status', {data:data});
+        })
+    })
+})
+
 app.get("/type", (req, res) => {
     //console.log(req.query.pop);    // ①
     let desc = "";
@@ -51,6 +67,29 @@ app.get("/type", (req, res) => {
             }
             //console.log(data);    // ③
             res.render('type', {data:data});
+        })
+    })
+})
+
+app.post("/pokemon/insert", (req, res) => {
+    console.log(req.body.pop);    // ①
+    let number = req.body.number + ",";
+    let name = "'" + req.body.name + "',";
+    let attack = req.body.attack + ",";
+    let defence = req.body.defence + ",";
+    let hp = req.body.hp + ",";
+    let type1 = "(select id from type where name='" + req.body.type1 + "')";
+    if(req.body.type2) type2 = ",(select id from type where name='" + req.body.type2 + "')";
+    else type2 = "";
+    let sql = "insert into pokemon (number,name,attack,defence,hp,type1_id,type2_id) values (" + number + name + attack + defence + hp + type1 + type2 + ");";
+    console.log(sql);    // ②
+    db.serialize( () => {
+        db.all(sql, (error, data) => {
+            if( error ) {
+                res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            res.render('show', {mes:"追加しました"});
         })
     })
 })
