@@ -6,6 +6,8 @@ const db = new sqlite3.Database('test2.db');
 
 app.set('view engine', 'ejs');
 app.use("/public", express.static(__dirname + "/public"));
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => {
   const message = "top page";
@@ -40,7 +42,7 @@ app.get("/type", (req, res) => {
     //console.log(req.query.pop);    // ①
     let desc = "";
     if( req.query.desc ) desc = " desc";
-    let sql = "select name from type" + desc + ";";
+    let sql = "select * from type" + desc + ";";
     //console.log(sql);    // ②
     db.serialize( () => {
         db.all(sql, (error, data) => {
