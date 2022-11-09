@@ -72,7 +72,7 @@ app.get("/type", (req, res) => {
 })
 
 app.post("/pokemon/insert", (req, res) => {
-    console.log(req.body.pop);    // ①
+    //console.log(req.body.pop);    // ①
     let number = req.body.number + ",";
     let name = "'" + req.body.name + "',";
     let attack = req.body.attack + ",";
@@ -82,7 +82,7 @@ app.post("/pokemon/insert", (req, res) => {
     if(req.body.type2) type2 = ",(select id from type where name='" + req.body.type2 + "')";
     else type2 = "";
     let sql = "insert into pokemon (number,name,attack,defence,hp,type1_id,type2_id) values (" + number + name + attack + defence + hp + type1 + type2 + ");";
-    console.log(sql);    // ②
+    //console.log(sql);    // ②
     db.serialize( () => {
         db.all(sql, (error, data) => {
             if( error ) {
@@ -94,6 +94,21 @@ app.post("/pokemon/insert", (req, res) => {
     })
 })
 
+app.post("/pokemon/update", (req, res) => {
+    console.log(req.body.pop);    // ①
+    id = 1;
+    let sql = "update pokemon set " + req.body.up + " = " + req.body.data + " where id = " + id + ";";
+    console.log(sql);    // ②
+    db.serialize( () => {
+        db.all(sql, (error, data) => {
+            if( error ) {
+                res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            res.render('show', {mes:"変更しました"});
+        })
+    })
+})
 
 
 
