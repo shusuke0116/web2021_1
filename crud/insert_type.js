@@ -2,24 +2,24 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('test2.db');
 
 let sqls =[
-  `insert into type (name) values ("ノーマル");`,
-  `insert into type (name) values ("ほのお");`,
-  `insert into type (name) values ("みず");`,
-  `insert into type (name) values ("でんき");`,
-  `insert into type (name) values ("くさ");`,
-  `insert into type (name) values ("こおり");`,
-  `insert into type (name) values ("かくとう");`,
-  `insert into type (name) values ("どく");`,
-  `insert into type (name) values ("じめん");`,
-  `insert into type (name) values ("ひこう");`,
-  `insert into type (name) values ("エスパー");`,
-  `insert into type (name) values ("むし");`,
-  `insert into type (name) values ("いわ");`,
-  `insert into type (name) values ("ゴースト");`,
-  `insert into type (name) values ("ドラゴン");`,
-  `insert into type (name) values ("あく");`,
-  `insert into type (name) values ("はがね");`,
-  `insert into type (name) values ("フェアリー");`
+  `insert into type (number,name) values (1,"ノーマル");`,
+  `insert into type (number,name) values (2,"ほのお");`,
+  `insert into type (number,name) values (3,"みず");`,
+  `insert into type (number,name) values (4,"でんき");`,
+  `insert into type (number,name) values (5,"くさ");`,
+  `insert into type (number,name) values (6,"こおり");`,
+  `insert into type (number,name) values (7,"かくとう");`,
+  `insert into type (number,name) values (8,"どく");`,
+  `insert into type (number,name) values (9,"じめん");`,
+  `insert into type (number,name) values (10,"ひこう");`,
+  `insert into type (number,name) values (11,"エスパー");`,
+  `insert into type (number,name) values (12,"むし");`,
+  `insert into type (number,name) values (13,"いわ");`,
+  `insert into type (number,name) values (14,"ゴースト");`,
+  `insert into type (number,name) values (15,"ドラゴン");`,
+  `insert into type (number,name) values (16,"あく");`,
+  `insert into type (number,name) values (17,"はがね");`,
+  `insert into type (number,name) values (18,"フェアリー");`
 ]
   
 

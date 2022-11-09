@@ -58,7 +58,7 @@ app.get("/type", (req, res) => {
     //console.log(req.query.pop);    // ①
     let desc = "";
     if( req.query.desc ) desc = " desc";
-    let sql = "select * from type" + desc + ";";
+    let sql = "select number,name from type" + desc + ";";
     //console.log(sql);    // ②
     db.serialize( () => {
         db.all(sql, (error, data) => {
