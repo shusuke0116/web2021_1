@@ -4,17 +4,17 @@
   <meta charset="utf-8">
   <title>status</title>
 </head>
+  <a href="/pokemon">/pokemon</a><br>
 <body>
-  <a href="/public/update_pokemon.html">/pokemon/update</a>
-  <% for( let row of data ) { %>
-    <p><%= row.number %></p>
-    <p><%= row.name %></p>
-    <p><%= row.type1 %>
-         <% if( row.type2 != null ){ %>
-            <td><%= row.type2 %></td>
-         <% } %>
-    </p>
-    <table>
+  <table>
+    <% for( let row of data ) { %>
+      <tr>No.<%= row.number %></tr>
+      <tr><%= row.name %></tr>
+      <tr><%= row.type1 %>
+           <% if( row.type2 != null ){ %>
+              ・<%= row.type2 %>
+           <% } %>
+      </tr>
         <tr>
             <td>攻撃</td>
             <td><%= row.attack %></td>
@@ -26,12 +26,6 @@
         <tr>
             <td>HP</td>
             <td><%= row.hp %></td>
-        </tr>
-        <tr>
-            <td><%= row.type1 %></td>
-            <% if( row.type2 != null ){ %>
-              <td><%= row.type2 %></td>
-            <% } %>
         </tr>
     </table>
   <% } %>

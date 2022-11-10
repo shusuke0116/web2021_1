@@ -20,12 +20,12 @@ app.get("/pokemon", (req, res) => {
     else order = " order by p.number";
     if( req.query.desc ) desc = " desc";  
     else desc = "";
-    if( req.query.pop ) pop = " limit " + req.query.pop;
-    else pop = "";
+    if( req.query.top ) top = " limit " + req.query.top;
+    else top = "";
     if( req.query.type ) type = " where type2 = '" + req.query.type + "' or type1 = '" + req.query.type + "'";  
     else type = "";
     
-    let sql = "select p.id,p.number,p.name,type.name as type1,p.type2 from (select pokemon.id,pokemon.number,pokemon.name,pokemon.type1_id,type.name as type2 from pokemon left join type on pokemon.type2_id = type.id) as p inner join type on p.type1_id = type.id" + type　+ order + desc + pop + ";";
+    let sql = "select p.id,p.number,p.name,type.name as type1,p.type2 from (select pokemon.id,pokemon.number,pokemon.name,pokemon.type1_id,type.name as type2 from pokemon left join type on pokemon.type2_id = type.id) as p inner join type on p.type1_id = type.id" + type　+ order + desc + top + ";";
     //console.log(sql);    // ②
     db.serialize( () => {
         db.all(sql, (error, data) => {
@@ -50,6 +50,68 @@ app.get("/pokemon/status", (req, res) => {
             }
             //console.log(data);    // ③
             res.render('status', {data:data});
+        })
+    })
+})
+
+app.get("/pokemon/status/:id", (req, res) => {
+    //console.log(req.query.pop);    // ①
+    
+    let sql = "select p.id,p.number,p.name,p.attack,p.defence,p.hp,type.name as type1,p.type2 from (select pokemon.id,pokemon.number,pokemon.name,pokemon.attack,pokemon.defence,pokemon.hp,pokemon.type1_id,type.name as type2 from pokemon left join type on pokemon.type2_id = type.id where pokemon.id = " + req.params.id + ") as p inner join type on p.type1_id = type.id;";
+    //console.log(sql);    // ②
+    db.serialize( () => {
+        db.all(sql, (error, data) => {
+            if( error ) {
+                res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            res.render('status', {data:data});
+        })
+    })
+})
+
+app.get("/pokemon/edit/:id", (req, res) => {
+    //console.log(req.query.pop);    // ①
+    
+    let sql = "select p.id,p.number,p.name,p.attack,p.defence,p.hp,type.name as type1,p.type2 from (select pokemon.id,pokemon.number,pokemon.name,pokemon.attack,pokemon.defence,pokemon.hp,pokemon.type1_id,type.name as type2 from pokemon left join type on pokemon.type2_id = type.id where pokemon.id = " + req.params.id + ") as p inner join type on p.type1_id = type.id;";
+    //console.log(sql);    // ②
+    db.serialize( () => {
+        db.all(sql, (error, data) => {
+            if( error ) {
+                res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            res.render('edit_pokemon', {data:data});
+        })
+    })
+})
+
+app.get("/pokemon/update", (req, res) => {
+    //console.log(req.query.pop);    // ①
+    let sql = "update pokemon set " + req.query.up + " = " + req.query.data + " where id = " + req.query.id + ";";
+    console.log(sql);    // ②
+    db.serialize( () => {
+        db.all(sql, (error, data) => {
+            if( error ) {
+                res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            res.render('show', {mes:"変更しました"});
+        })
+    })
+})
+
+app.get("/pokemon/delete", (req, res) => {
+    //console.log(req.query.pop);    // ①
+    let sql = "delete from pokemon where id = " + req.query.id + ";";
+    console.log(sql);    // ②
+    db.serialize( () => {
+        db.all(sql, (error, data) => {
+            if( error ) {
+                res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            res.render('show', {mes:"変更しました"});
         })
     })
 })
@@ -93,23 +155,6 @@ app.post("/pokemon/insert", (req, res) => {
         })
     })
 })
-
-app.post("/pokemon/update", (req, res) => {
-    console.log(req.body.pop);    // ①
-    id = 1;
-    let sql = "update pokemon set " + req.body.up + " = " + req.body.data + " where id = " + id + ";";
-    console.log(sql);    // ②
-    db.serialize( () => {
-        db.all(sql, (error, data) => {
-            if( error ) {
-                res.render('show', {mes:"エラーです"});
-            }
-            //console.log(data);    // ③
-            res.render('show', {mes:"変更しました"});
-        })
-    })
-})
-
 
 
 app.use(function(req, res, next) {

@@ -6,6 +6,7 @@
 </head>
 <body>
   <h2>pokemon一覧</h2>  
+  <a href="/pokemon">/pokemon</a><br>
   <a href="/public/insert_pokemon.html">insert</a>
   <form action="/pokemon">
     <details>
@@ -14,14 +15,14 @@
         <label for="name">名前順</label>
         <input type="checkbox" name="desc" id="desc">
         <label for="desc">降順</label>
-        <input type="number" name="pop" id="pop" size="3">
-        <label for="pop">表示数</label>
+        <input type="number" name="top" id="top" size="3">
+        <label for="top">表示数</label>
         <input type="submit" value="並び替え"><br>
         タイプ：<input type=text" name="type" id="type">
         <input type="submit" value="絞り込み"><br>
     </details>
   </form>
-  <table>
+  <table border=1>
       <tr>
         <td>図鑑番号</td>
         <td>名前</td>
@@ -31,11 +32,12 @@
       <% for( let row of data ) { %>
         <tr>
             <td><%= row.number %></td>
-            <td><%= row.name %></td>
+            <td><a href="<%= '/pokemon/status/' + row.id %>"><%= row.name %></a></td>
             <td><%= row.type1 %></td>
             <% if( row.type2 != null ){ %>
               <td><%= row.type2 %></td>
             <% } %>
+            <td><a href="<%= '/pokemon/edit/' + row.id %>">edit</a></td>
         </tr>
       <% } %>
   </table>

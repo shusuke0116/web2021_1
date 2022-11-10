@@ -1,0 +1,56 @@
+<!Doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>insert_pokemon</title>
+</head>
+<body>
+  <a href="/pokemon">/pokemon</a>
+  <hr>
+ <table border=1>
+   <tr>
+        <td>図鑑番号</td>
+        <td>名前</td>
+        <td>タイプ１</td>
+        <td>タイプ２</td>
+        <td>攻撃</td>
+        <td>防御</td>
+        <td>HP</td>
+      </tr>   
+    <% for( let row of data ) { %>
+      <tr>
+        <td>No.<%= row.number %></td>
+        <td><%= row.name %></td>
+        <td><%= row.type1 %></td>
+        <td> <% if( row.type2 != null ){ %>
+                <%= row.type2 %>
+             <% } %>
+        </td>
+        <td><%= row.attack %></td>
+        <td><%= row.defence %></td>
+        <td><%= row.hp %></td>
+      </tr>
+    </table>
+  <% } %>
+  <hr>
+  <form action="/pokemon/update">
+    <select name="up">
+      <option value="number">図鑑番号</option>
+      <option value="name">名前</option>
+      <option value="attack">攻撃種族値</option>
+      <option value="defence">防御種族値</option>
+      <option value="hp">HP種族値</option>
+      <option value="type1">タイプ１</option>
+      <option value="type2">タイプ２</option>
+    </select>
+    ：<input type=text" name="data" size="8"><br>
+    <input type="hidden" name="id" value="<%= data[0].id %>">
+    <input type="submit" value="変更"><br>
+  </form>
+  <hr>
+  <form action="/pokemon/delete">
+    <input type="hidden" name="id" value="<%= data[0].id %>">
+    <input type="submit" value="削除">
+  </form>
+</body>
+</html>

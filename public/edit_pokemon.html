@@ -5,7 +5,7 @@
   <title>insert_pokemon</title>
 </head>
 <body>
-  <form action="/pokemon/update" method="post">
+  <form action="<%= '/pokemon/update/' + req.params.id" method="post">
     <select name="up">
       <option value="number">図鑑番号</option>
       <option value="name">名前</option>
