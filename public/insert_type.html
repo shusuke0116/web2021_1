@@ -1,0 +1,22 @@
+<!Doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>insert_pokemon</title>
+</head>
+<body>
+  <a href="/type">一覧に戻る</a>
+  <hr>
+  <form action="/type/insert" method="post">
+    タイプ番号：<input type=text" name="number" required>（半角数字）<br>
+    タイプ名：<input type=text" name="name" required>（全角ひらがな又は全角カタカナ）<br>
+    <input type="submit" value="追加"><br>
+  </form>
+  <hr>
+  <details>
+    <summary>使い方</summary>
+      <p>追加したいタイプのタイプ番号・タイプ名を入力する。</p>
+      <p>追加ボタンを押すと一覧に追加される。</p>
+  </details>
+</body>
+</html>

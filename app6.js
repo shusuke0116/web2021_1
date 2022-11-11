@@ -118,9 +118,8 @@ app.get("/pokemon/delete", (req, res) => {
 
 app.get("/type", (req, res) => {
     //console.log(req.query.pop);    // ①
-    let desc = "";
-    if( req.query.desc ) desc = " desc";
-    let sql = "select number,name from type" + desc + ";";
+    let order = "order by number"
+    let sql = "select * from type " + order + ";";
     //console.log(sql);    // ②
     db.serialize( () => {
         db.all(sql, (error, data) => {
@@ -129,6 +128,37 @@ app.get("/type", (req, res) => {
             }
             //console.log(data);    // ③
             res.render('type', {data:data});
+        })
+    })
+})
+
+app.get("/type/edit/:id", (req, res) => {
+    //console.log(req.query.pop);    // ①
+    
+    let sql = "select * from type where id = " + req.params.id + ";";
+    //console.log(sql);    // ②
+    db.serialize( () => {
+        db.all(sql, (error, data) => {
+            if( error ) {
+                res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            res.render('edit_type', {data:data});
+        })
+    })
+})
+
+app.get("/type/delete", (req, res) => {
+    //console.log(req.query.pop);    // ①
+    let sql = "delete from type where id = " + req.query.id + ";";
+    console.log(sql);    // ②
+    db.serialize( () => {
+        db.all(sql, (error, data) => {
+            if( error ) {
+                res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            res.render('show', {mes:"削除しました"});
         })
     })
 })
@@ -156,6 +186,22 @@ app.post("/pokemon/insert", (req, res) => {
     })
 })
 
+app.post("/type/insert", (req, res) => {
+    //console.log(req.body.pop);    // ①
+    let number = req.body.number + ",";
+    let name = "'" + req.body.name + "'";
+    let sql = "insert into type (number,name) values (" + number + name + ");";
+    //console.log(sql);    // ②
+    db.serialize( () => {
+        db.all(sql, (error, data) => {
+            if( error ) {
+                res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            res.render('show', {mes:"追加しました"});
+        })
+    })
+})
 
 app.use(function(req, res, next) {
   res.status(404).send('ページが見つかりません');

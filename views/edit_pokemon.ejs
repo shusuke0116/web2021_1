@@ -46,13 +46,26 @@
     </select>
     ：<input type=text" name="data" size="8">
     <input type="hidden" name="id" value="<%= data[0].id %>">
-    <input type="submit" value="変更"><br>
+    <input type="submit" value="更新"><br>
   </form>
+  <p>
+  <details>
+    <summary>使い方</summary>
+      <p>左のボックスから更新したい要素を選択し、右のボックスに値や名前を入力する。</p>
+      <p>更新ボタンを押すと選択した要素が更新される。</p>     
+  </details>
+  </p>
   <hr>
   <h2>このポケモンを削除する</h2>
   <form action="/pokemon/delete">
     <input type="hidden" name="id" value="<%= data[0].id %>">
     <input type="submit" value="削除">
   </form>
+  <p>
+  <details>
+    <summary>使い方</summary>
+      <p>削除ボタンを押すと、一覧から削除される。</p>
+  </details>
+  </p>
 </body>
 </html>

@@ -1,0 +1,35 @@
+<!Doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>edit_type</title>
+</head>
+<body>
+  <a href="/type">一覧に戻る</a>
+  <hr>
+ <table border=1>
+   <tr>
+        <td>タイプ番号</td>
+        <td>タイプ名</td>
+      </tr>   
+    <% for( let row of data ) { %>
+      <tr>
+        <td><%= row.number %></td>
+        <td><%= row.name %></td>
+      </tr>
+    </table>
+  <% } %>
+  <hr>
+  <h2>このタイプを削除する</h2>
+  <form action="/type/delete">
+    <input type="hidden" name="id" value="<%= data[0].id %>">
+    <input type="submit" value="削除">
+  </form>
+  <p>
+  <details>
+    <summary>使い方</summary>
+      <p>削除ボタンを押すと、一覧から削除される。</p>
+  </details>
+  </p>
+</body>
+</html>

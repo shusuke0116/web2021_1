@@ -5,15 +5,34 @@
   <title>type一覧</title>
 </head>
 <body>
+  <a href="/">トップページ</a>
+  <a href="/public/insert_type.html">タイプを追加する</a>
+  <a href="/type">ページの更新</a>
+  <hr>
   <h2>タイプ一覧</h2>
+  <hr>
   <table border=1>
       <% for( let row of data ) { %>
         <tr>
             <td><%= row.number %></td>
             <td><%= row.name %></td>
+            <td><a href="<%= '/type/edit/' + row.id %>">編集</a></td>
         </tr>
       <% } %>
   </table>
   <a href="/">top page</a>
+  <hr>
+  <details>
+    <summary>使い方</summary>
+      <details>
+        <summary>並び</summary>
+          <p>一覧は番号順になっている。</p>
+      </details>
+      <details>
+        <summary>編集リンク</summary>
+          <p>編集リンクを押すことでそのタイプの編集ページに行くことができる。</p>
+          <p>編集ページでは、そのタイプの情報について削除ができる。</p>
+      </details>
+  </details>
 </body>
 </html>
