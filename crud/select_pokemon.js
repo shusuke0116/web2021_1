@@ -12,7 +12,7 @@ db.serialize( () => {
 			return;
 		}
 		for( let data of row ) {
-			console.log(data.id + ' : ' + data.number + ' : ' + data.name + ' : ' + data.attack + ' : ' + data.defence + ' : ' + data.hp + ' : ' + data.type1_id + ' : ' + data.type2_id );
+			console.log(data.id + ' : ' + data.number + ' : ' + data.name + ' : ' + data.attack + ' : ' + data.defence + ' : ' + data.hp);
 		}
 	});
 });

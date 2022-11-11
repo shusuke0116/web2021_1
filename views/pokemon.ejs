@@ -28,19 +28,15 @@
       <tr>
         <td>図鑑番号</td>
         <td>名前</td>
-        <td>タイプ１</td>
-        <td>タイプ２</td>
+        <td>タイプ</td>
+        <td>タイプ</td>
       </tr>
       <% for( let row of data ) { %>
         <tr>
             <td>No.<%= row.number %></td>
-            <td><a href="<%= '/pokemon/status/' + row.id %>"><%= row.name %></a></td>
-            <td><%= row.type1 %></td>
-            <% if( row.type2 != null ){ %>
-              <td><%= row.type2 %></td>
-            <% } else { %>
-              <td></td>
-            <% } %>
+            <td><a href="<%= '/pokemon/status/' + row.id %>"><%= row.p_name %></a></td>
+            <td><%= row.t_name %></td>
+            
             <td><a href="<%= '/pokemon/edit/' + row.id %>">編集</a></td>
         </tr>
       <% } %>

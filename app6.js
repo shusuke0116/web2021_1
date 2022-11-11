@@ -16,16 +16,18 @@ app.get("/", (req, res) => {
 
 app.get("/pokemon", (req, res) => {
     //console.log(req.query.pop);    // ①
-    if( req.query.order ) order = " order by p.name";
-    else order = " order by p.number";
+    if( req.query.order ) order = " order by pokemon.name";
+    else order = " order by pokemon.number";
     if( req.query.desc ) desc = " desc";  
     else desc = "";
     if( req.query.top ) top = " limit " + req.query.top;
     else top = "";
-    if( req.query.type ) type = " where type2 = '" + req.query.type + "' or type1 = '" + req.query.type + "'";  
+    if( req.query.type ) type = " where type.name = '" + req.query.type + "'";  
     else type = "";
     
-    let sql = "select p.id,p.number,p.name,type.name as type1,p.type2 from (select pokemon.id,pokemon.number,pokemon.name,pokemon.type1_id,type.name as type2 from pokemon left join type on pokemon.type2_id = type.id) as p inner join type on p.type1_id = type.id" + type　+ order + desc + top + ";";
+    let sql = 
+"select pokemon.id,pokemon.number,pokemon.name as p_name,type.name as t_name from pt inner join pokemon on pt.p_id = pokemon.id inner join type on pt.t_num = type.number" + order + desc + top + ";";
+
     //console.log(sql);    // ②
     db.serialize( () => {
         db.all(sql, (error, data) => {
