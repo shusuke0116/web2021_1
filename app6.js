@@ -111,7 +111,7 @@ app.get("/pokemon/delete", (req, res) => {
                 res.render('show', {mes:"エラーです"});
             }
             //console.log(data);    // ③
-            res.render('show', {mes:"変更しました"});
+            res.render('show', {mes:"削除しました"});
         })
     })
 })

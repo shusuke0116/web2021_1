@@ -4,27 +4,28 @@
   <meta charset="utf-8">
   <title>status</title>
 </head>
-  <a href="/pokemon">/pokemon</a><br>
 <body>
+  <a href="/pokemon">一覧に戻る</a>
+  <hr>
   <table>
     <% for( let row of data ) { %>
-      <tr>No.<%= row.number %></tr>
-      <tr><%= row.name %></tr>
-      <tr><%= row.type1 %>
+      <p>No.<%= row.number %></p>
+      <p><%= row.name %></p>
+      <p><%= row.type1 %>
            <% if( row.type2 != null ){ %>
               ・<%= row.type2 %>
            <% } %>
-      </tr>
+      </p>
         <tr>
-            <td>攻撃</td>
+            <td>攻撃：</td>
             <td><%= row.attack %></td>
         </tr>
         <tr>
-            <td>防御</td>
+            <td>防御：</td>
             <td><%= row.defence %></td>
         </tr>
         <tr>
-            <td>HP</td>
+            <td>HP：</td>
             <td><%= row.hp %></td>
         </tr>
     </table>

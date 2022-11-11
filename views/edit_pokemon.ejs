@@ -5,7 +5,7 @@
   <title>insert_pokemon</title>
 </head>
 <body>
-  <a href="/pokemon">/pokemon</a>
+  <a href="/pokemon">一覧に戻る</a>
   <hr>
  <table border=1>
    <tr>
@@ -33,6 +33,7 @@
     </table>
   <% } %>
   <hr>
+  <h2>このポケモンの情報を更新する</h2>
   <form action="/pokemon/update">
     <select name="up">
       <option value="number">図鑑番号</option>
@@ -43,11 +44,12 @@
       <option value="type1">タイプ１</option>
       <option value="type2">タイプ２</option>
     </select>
-    ：<input type=text" name="data" size="8"><br>
+    ：<input type=text" name="data" size="8">
     <input type="hidden" name="id" value="<%= data[0].id %>">
     <input type="submit" value="変更"><br>
   </form>
   <hr>
+  <h2>このポケモンを削除する</h2>
   <form action="/pokemon/delete">
     <input type="hidden" name="id" value="<%= data[0].id %>">
     <input type="submit" value="削除">

@@ -5,21 +5,53 @@
   <title>pokemon一覧</title>
 </head>
 <body>
-  <h2>pokemon一覧</h2>  
-  <a href="/pokemon">/pokemon</a><br>
-  <a href="/public/insert_pokemon.html">insert</a>
+  <a href="/">トップページ</a>
+  <a href="/public/insert_pokemon.html">ポケモンを追加する</a>
+  <a href="/pokemon">更新</a>
+  <hr>
+  <h2>ポケモン一覧</h2>  
+  <hr>
+  <details>
+    <summary>使い方</summary>
+      <details>
+        <summary>並び替え・絞り込み</summary>
+          <p>一覧の表示は、デフォルトでは番号順（昇順）になっている。</p>
+          <p>並び替えについて</p>
+            <ul>
+              <li>「名前順」にチェックを入れると名前順に表示されるよう変更できる。</li>
+              <li>「降順」にチェックを入れると降順に表示されるように変更できる。</li>
+            </ul>
+            <p>表示数について</p>
+            <ul>
+              <li>「表示数」の左にあるボックスに数字を入れることで表示数を制限できる。</li>
+            </ul>
+            <p>絞り込みについて</p>
+            <ul>
+              <li>「タイプ」横のテキストボックスにタイプ名（全角ひらがな）を入力することでそのタイプを持つポケモンのみ表示することができる。</li>
+            </ul>
+      </details>
+      <details>
+        <summary>名前のリンク</summary>
+          <p>ポケモンの名前を押すことでそのポケモンの詳細ページに飛ぶことができる。</p>
+      </details>
+      <details>
+        <summary>編集リンク</summary>
+          <p>編集リンクを押すことでそのポケモンの編集ページに行くことができる。</p>
+          <p>編集ページでは、そのポケモンの情報について更新や削除ができる。</p>
+      </details>
+  </details>
+  <hr>
   <form action="/pokemon">
     <details>
       <summary>並び替え・絞り込み</summary>
         <input type="checkbox" name="order" id="order">
         <label for="name">名前順</label>
         <input type="checkbox" name="desc" id="desc">
-        <label for="desc">降順</label>
+        <label for="desc">降順</label><br>
         <input type="number" name="top" id="top" size="3">
-        <label for="top">表示数</label>
-        <input type="submit" value="並び替え"><br>
-        タイプ：<input type=text" name="type" id="type">
-        <input type="submit" value="絞り込み"><br>
+        <label for="top">表示数</label><br>
+        タイプ：<input type=text" name="type" id="type"　pattern="[\u3041-\u3096]*">
+        <input type="submit" value="検索"><br>
     </details>
   </form>
   <table border=1>
@@ -31,16 +63,19 @@
       </tr>
       <% for( let row of data ) { %>
         <tr>
-            <td><%= row.number %></td>
+            <td>No.<%= row.number %></td>
             <td><a href="<%= '/pokemon/status/' + row.id %>"><%= row.name %></a></td>
             <td><%= row.type1 %></td>
             <% if( row.type2 != null ){ %>
               <td><%= row.type2 %></td>
+            <% } else { %>
+              <td></td>
             <% } %>
-            <td><a href="<%= '/pokemon/edit/' + row.id %>">edit</a></td>
+            <td><a href="<%= '/pokemon/edit/' + row.id %>">編集</a></td>
         </tr>
       <% } %>
   </table>
-  <a href="/">top page</a>
+  <hr>
+  <a href="/">トップページ</a>
 </body>
 </html>
