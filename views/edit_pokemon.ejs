@@ -31,7 +31,7 @@
     </table>
   <hr>
   <h2>このポケモンの情報を更新する</h2>
-  <form action="/pokemon/update">
+  <form action="/pokemon/update" method="post">
     <select name="up">
       <option value="number">図鑑番号</option>
       <option value="name">名前</option>
@@ -44,7 +44,7 @@
     <input type="submit" value="更新"><br>
   </form>
   <h3>このポケモンのタイプを更新する</h3>
-  <form action="/pokemon/update/type">
+  <form action="/pokemon/update/type" method="post">
     変更するタイプ：
     <select name="typeup">
       <option value="<%= data[0].typenum %>"><%= data[0].type %></option>
