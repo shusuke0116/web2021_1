@@ -8,27 +8,25 @@
   <a href="/pokemon">一覧に戻る</a>
   <hr>
   <table>
-    <% for( let row of data ) { %>
-      <p>No.<%= row.number %></p>
-      <p><%= row.name %></p>
-      <p><%= row.type1 %>
-           <% if( row.type2 != null ){ %>
-              ・<%= row.type2 %>
-           <% } %>
-      </p>
-        <tr>
-            <td>攻撃：</td>
-            <td><%= row.attack %></td>
-        </tr>
-        <tr>
-            <td>防御：</td>
-            <td><%= row.defence %></td>
-        </tr>
-        <tr>
-            <td>HP：</td>
-            <td><%= row.hp %></td>
-        </tr>
+    <p>No.<%= data[0].number %></p>
+    <p><%= data[0].name %></p>
+    <p><%= data[0].type %>
+    <% if(data[1]){ %>
+      <%= "・" + data[1].type %>
+    <% } %>
+    </p>
+      <tr>
+          <td>攻撃：</td>
+          <td><%= data[0].attack %></td>
+      </tr>
+      <tr>
+          <td>防御：</td>
+          <td><%= data[0].defence %></td>
+      </tr>
+      <tr>
+          <td>HP：</td>
+          <td><%= data[0].hp %></td>
+      </tr>
     </table>
-  <% } %>
 </body>
 </html>

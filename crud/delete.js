@@ -2,7 +2,7 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('test2.db');
 
 let sql = `
-delete from pokemon where name = 'マリルリ';
+delete from pt where p_id = 9 and t_num = 3;
 `
 
 db.serialize( () => {

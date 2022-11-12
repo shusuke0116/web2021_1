@@ -11,27 +11,24 @@
    <tr>
         <td>図鑑番号</td>
         <td>名前</td>
-        <td>タイプ１</td>
-        <td>タイプ２</td>
         <td>攻撃</td>
         <td>防御</td>
         <td>HP</td>
-      </tr>   
-    <% for( let row of data ) { %>
-      <tr>
-        <td>No.<%= row.number %></td>
-        <td><%= row.name %></td>
-        <td><%= row.type1 %></td>
-        <td> <% if( row.type2 != null ){ %>
-                <%= row.type2 %>
-             <% } %>
+        <td>タイプ</td>
+    </tr>   
+    <tr>
+        <td>No.<%= data[0].number %></td>
+        <td><%= data[0].name %></td>
+        <td><%= data[0].attack %></td>
+        <td><%= data[0].defence %></td>
+        <td><%= data[0].hp %></td>
+        <td><%= data[0].type %>
+        <% if(data[1]){ %>
+          <%= "・" + data[1].type %>
+        <% } %>
         </td>
-        <td><%= row.attack %></td>
-        <td><%= row.defence %></td>
-        <td><%= row.hp %></td>
-      </tr>
+    </tr>
     </table>
-  <% } %>
   <hr>
   <h2>このポケモンの情報を更新する</h2>
   <form action="/pokemon/update">
@@ -41,12 +38,29 @@
       <option value="attack">攻撃種族値</option>
       <option value="defence">防御種族値</option>
       <option value="hp">HP種族値</option>
-      <option value="type1">タイプ１</option>
-      <option value="type2">タイプ２</option>
     </select>
     ：<input type=text" name="data" size="8">
     <input type="hidden" name="id" value="<%= data[0].id %>">
     <input type="submit" value="更新"><br>
+  </form>
+  <h3>このポケモンのタイプを更新する</h3>
+  <form action="/pokemon/update/type">
+    変更するタイプ：
+    <select name="typeup">
+      <option value="<%= data[0].typenum %>"><%= data[0].type %></option>
+      <% if(data[1]){ %>
+        <option value="<%= data[1].typenum %>"><%= data[1].type %></option>
+      <% } %>
+    </select><br>
+    新たなタイプ：<input type=text" name="type" size="8">
+    <input type="hidden" name="id" value="<%= data[0].id %>">
+    <input type="submit" value="更新"><br>
+  </form>
+  <h3>このポケモンにタイプを追加する</h3>  
+  <form action="/pokemon/insert/type" method="post">
+    追加するタイプ：<input type=text" name="type" size="8">
+    <input type="hidden" name="id" value="<%= data[0].id %>">
+    <input type="submit" value="追加"><br>
   </form>
   <p>
   <details>
