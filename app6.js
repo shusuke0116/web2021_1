@@ -14,6 +14,8 @@ app.get("/", (req, res) => {
   res.render('toppage', {mes:message});
 });
 
+/* /pokemon */
+
 app.get("/pokemon", (req, res) => {
     //console.log(req.query.pop);    // ①
     if( req.query.order ) order = " order by pokemon.name";
@@ -25,7 +27,7 @@ app.get("/pokemon", (req, res) => {
     if( req.query.type ) type = " where type.name = '" + req.query.type + "'";  
     else type = "";
     
-    let sql = "select pokemon.id,pokemon.number, pokemon.name,type.name as type from pokemon,pt inner join type on ( (pokemon.id=pt.p_id) and (type.id=pt.t_num) )" + order + desc + top + ";";
+    let sql = "select pokemon.id,pokemon.number, pokemon.name,type.name as type from pokemon,pt inner join type on ( (pokemon.id=pt.p_id) and (type.number=pt.t_num) )" + order + desc + top + ";";
 
     //console.log(sql);    // ②
     db.serialize( () => {
@@ -42,7 +44,7 @@ app.get("/pokemon", (req, res) => {
 app.get("/pokemon/status", (req, res) => {
     //console.log(req.query.pop);    // ①
     
-    let sql = "select pokemon.id,pokemon.number, pokemon.name,pokemon.attack,pokemon.defence,pokemon.hp,type.name as type from pokemon,pt inner join type on ( (pokemon.id=pt.p_id) and (type.id=pt.t_num) )";
+    let sql = "select pokemon.id,pokemon.number, pokemon.name,pokemon.attack,pokemon.defence,pokemon.hp,type.name as type from pokemon,pt inner join type on ( (pokemon.id=pt.p_id) and (type.number=pt.t_num) )";
     //console.log(sql);    // ②
     db.serialize( () => {
         db.all(sql, (error, data) => {
@@ -58,7 +60,7 @@ app.get("/pokemon/status", (req, res) => {
 app.get("/pokemon/status/:id", (req, res) => {
     //console.log(req.query.pop);    // ①
     
-    let sql = "select pokemon.id,pokemon.number, pokemon.name,pokemon.attack,pokemon.defence,pokemon.hp,type.name as type from pokemon,pt inner join type on ( (pokemon.id=pt.p_id) and (type.id=pt.t_num) ) where pokemon.id = " + req.params.id + ";";
+    let sql = "select pokemon.id,pokemon.number, pokemon.name,pokemon.attack,pokemon.defence,pokemon.hp,type.name as type from pokemon,pt inner join type on ( (pokemon.id=pt.p_id) and (type.number=pt.t_num) ) where pokemon.id = " + req.params.id + ";";
     //console.log(sql);    // ②
     db.serialize( () => {
         db.all(sql, (error, data) => {
@@ -74,7 +76,7 @@ app.get("/pokemon/status/:id", (req, res) => {
 app.get("/pokemon/edit/:id", (req, res) => {
     //console.log(req.query.pop);    // ①
     
-    let sql = "select pokemon.id,pokemon.number, pokemon.name,pokemon.attack,pokemon.defence,pokemon.hp,type.number as typenum, type.name as type from pokemon,pt inner join type on ( (pokemon.id=pt.p_id) and (type.id=pt.t_num) ) where pokemon.id = " + req.params.id + ";";
+    let sql = "select pokemon.id,pokemon.number, pokemon.name,pokemon.attack,pokemon.defence,pokemon.hp,type.number as typenum, type.name as type from pokemon,pt inner join type on ( (pokemon.id=pt.p_id) and (type.number=pt.t_num) ) where pokemon.id = " + req.params.id + ";";
     //console.log(sql);    // ②
     db.serialize( () => {
         db.all(sql, (error, data) => {
@@ -97,53 +99,6 @@ app.get("/pokemon/page/insert", (req, res) => {
             }
             //console.log(data);    // ③
             res.render('insert_pokemon', {data:data});
-        })
-    })
-})
-
-app.get("/type", (req, res) => {
-    //console.log(req.query.pop);    // ①
-    let order = "order by number"
-    let sql = "select * from type " + order + ";";
-    //console.log(sql);    // ②
-    db.serialize( () => {
-        db.all(sql, (error, data) => {
-            if( error ) {
-                res.render('show', {mes:"エラーです"});
-            }
-            //console.log(data);    // ③
-            res.render('type', {data:data});
-        })
-    })
-})
-
-app.get("/type/edit/:id", (req, res) => {
-    //console.log(req.query.pop);    // ①
-    
-    let sql = "select * from type where id = " + req.params.id + ";";
-    //console.log(sql);    // ②
-    db.serialize( () => {
-        db.all(sql, (error, data) => {
-            if( error ) {
-                res.render('show', {mes:"エラーです"});
-            }
-            //console.log(data);    // ③
-            res.render('edit_type', {data:data});
-        })
-    })
-})
-
-app.get("/type/delete", (req, res) => {
-    //console.log(req.query.pop);    // ①
-    let sql = "delete from type where id = " + req.query.id + ";";
-    console.log(sql);    // ②
-    db.serialize( () => {
-        db.all(sql, (error, data) => {
-            if( error ) {
-                res.render('show', {mes:"エラーです"});
-            }
-            //console.log(data);    // ③
-            res.render('show', {mes:"削除しました"});
         })
     })
 })
@@ -212,8 +167,21 @@ app.post("/pokemon/update", (req, res) => {
 
 app.post("/pokemon/update/type", (req, res) => {
     //console.log(req.body.pop);    // ①
-    let type = "(select number from type where type.name = '" + req.body.type + "')";
-    let sql = "update pt set t_num = " + type + "where p_id = " + req.body.id + " and t_num = " + req.body.typeup + ";";
+    if(req.body.newtype){
+      newtype = "(select number from type where type.name = '" + req.body.newtype + "')";
+      if(req.body.typeup){
+        sql = "update pt set t_num = " + newtype + "where p_id = " + req.body.id + " and t_num = " + req.body.typeup + ";";
+      } else{
+        sql = "insert into pt (p_id,t_num) values (" + req.body.id + "," + newtype + ");";
+      }
+    } else {
+      if(req.body.typeup){
+        sql = "delete from pt where p_id = " + req.body.id + " and t_num = " + req.body.typeup + ";";
+      } else {
+       return res.render('show', {mes:"変更するタイプを選択してください。"});
+      }
+      
+    }
     console.log(sql);    // ②
     db.serialize( () => {
         db.all(sql, (error, data) => {
@@ -226,20 +194,71 @@ app.post("/pokemon/update/type", (req, res) => {
     })
 })
 
-app.post("/pokemon/insert/type", (req, res) => {
+/* /type */
+
+app.get("/type", (req, res) => {
     //console.log(req.query.pop);    // ①
-    let type = "(select number from type where type.name = '" + req.body.type + "')";
-    let sql = "insert into pt (p_id,t_num) values (" + req.body.id + "," + type + ");";
-    console.log(sql);    // ②
+    let order = "order by number"
+    let sql = "select * from type " + order + ";";
+    //console.log(sql);    // ②
     db.serialize( () => {
         db.all(sql, (error, data) => {
             if( error ) {
                 res.render('show', {mes:"エラーです"});
             }
             //console.log(data);    // ③
-            res.render('show', {mes:"変更しました"});
+            res.render('type', {data:data});
         })
     })
+})
+
+app.get("/type/edit/:id", (req, res) => {
+    //console.log(req.query.pop);    // ①
+    
+    let sql = "select * from type where id = " + req.params.id + ";";
+    //console.log(sql);    // ②
+    db.serialize( () => {
+        db.all(sql, (error, data) => {
+            if( error ) {
+                res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            res.render('edit_type', {data:data});
+        })
+    })
+})
+
+app.get("/type/page/insert", (req, res) => {
+    let sql = "select number,name from type;";
+    //console.log(sql);    // ②
+    db.serialize( () => {
+        db.all(sql, (error, data) => {
+            if( error ) {
+                res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            res.render('insert_type', {data:data});
+        })
+    })
+})
+
+app.post("/type/delete", (req, res) => {
+    //console.log(req.body.pop);    // ①
+    let sqls = [
+      "delete from type where id = " + req.body.id + ";",
+      "delete from pt where t_num = " + req.body.number + ";"
+    ]
+    console.log(sqls);    // ②
+    for(let sql of sqls){
+      db.serialize( () => {
+          db.all(sql, (error, data) => {
+              if( error ) {
+                  res.render('show', {mes:"エラーです"});
+              }
+          })
+      })
+    }
+    res.render('show', {mes:"削除しました"});
 })
 
 app.post("/type/insert", (req, res) => {

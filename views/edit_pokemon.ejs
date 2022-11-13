@@ -30,7 +30,7 @@
     </tr>
     </table>
   <hr>
-  <h2>このポケモンの情報を更新する</h2>
+  <h3>このポケモンの情報を更新する</h3>
   <form action="/pokemon/update" method="post">
     <select name="up">
       <option value="number">図鑑番号</option>
@@ -50,17 +50,13 @@
       <option value="<%= data[0].typenum %>"><%= data[0].type %></option>
       <% if(data[1]){ %>
         <option value="<%= data[1].typenum %>"><%= data[1].type %></option>
+      <% } else{ %>
+        <option></option>
       <% } %>
     </select><br>
-    新たなタイプ：<input type=text" name="type" size="8">
+    新たなタイプ：<input type=text" name="newtype" size="8">
     <input type="hidden" name="id" value="<%= data[0].id %>">
     <input type="submit" value="更新"><br>
-  </form>
-  <h3>このポケモンにタイプを追加する</h3>  
-  <form action="/pokemon/insert/type" method="post">
-    追加するタイプ：<input type=text" name="type" size="8">
-    <input type="hidden" name="id" value="<%= data[0].id %>">
-    <input type="submit" value="追加"><br>
   </form>
   <p>
   <details>
@@ -70,11 +66,14 @@
   </details>
   </p>
   <hr>
-  <h2>このポケモンを削除する</h2>
-  <form action="/pokemon/delete" method="post">
+      <h3>このポケモンを削除する</h3>
+  <details>
+    <summary>削除する</summary>
+    <form action="/pokemon/delete" method="post">
     <input type="hidden" name="id" value="<%= data[0].id %>">
     <input type="submit" value="削除">
   </form>
+  </details>
   <p>
   <details>
     <summary>使い方</summary>

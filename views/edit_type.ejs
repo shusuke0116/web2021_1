@@ -21,9 +21,13 @@
   <% } %>
   <hr>
   <h2>このタイプを削除する</h2>
-  <form action="/type/delete">
+  <details>
+    <summary>削除する</summary>
+    <form action="/type/delete" method="post">
     <input type="hidden" name="id" value="<%= data[0].id %>">
+      <input type="hidden" name="number" value="<%= data[0].number %>">
     <input type="submit" value="削除">
+  </details>
   </form>
   <p>
   <details>
