@@ -71,7 +71,7 @@
   </p>
   <hr>
   <h2>このポケモンを削除する</h2>
-  <form action="/pokemon/delete">
+  <form action="/pokemon/delete" method="post">
     <input type="hidden" name="id" value="<%= data[0].id %>">
     <input type="submit" value="削除">
   </form>

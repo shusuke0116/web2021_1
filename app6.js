@@ -87,17 +87,16 @@ app.get("/pokemon/edit/:id", (req, res) => {
     })
 })
 
-app.get("/pokemon/delete", (req, res) => {
-    //console.log(req.query.pop);    // ①
-    let sql = "delete from pokemon where id = " + req.query.id + ";";
-    console.log(sql);    // ②
+app.get("/pokemon/page/insert", (req, res) => {
+    let sql = "select number,name from type;";
+    //console.log(sql);    // ②
     db.serialize( () => {
         db.all(sql, (error, data) => {
             if( error ) {
                 res.render('show', {mes:"エラーです"});
             }
             //console.log(data);    // ③
-            res.render('show', {mes:"削除しました"});
+            res.render('insert_pokemon', {data:data});
         })
     })
 })
@@ -151,18 +150,47 @@ app.get("/type/delete", (req, res) => {
 
 app.post("/pokemon/insert", (req, res) => {
     //console.log(req.body.pop);    // ①
-
-    let sql = "insert all into pokemon (number,name,attack,defence,hp) values (" + req.body.number + ",'" + req.body.name + "'," + req.body.attack + "," + req.body.defence + "," + req.body.hp + ")";
-    //console.log(sql);    // ②
-    db.serialize( () => {
+    if(req.body.area) area = req.body.area;
+    else area = "";
+  
+    let sqls = [
+      "insert into pokemon (number,name,attack,defence,hp) values (" + req.body.number + ",'" + req.body.name + area + "'," + req.body.attack + "," + req.body.defence + "," + req.body.hp + ");",
+      "insert into pt (p_id,t_num) values ((select id from pokemon where rowid = last_insert_rowid())," + req.body.type1 + ");"
+    ]
+  
+    if(req.body.type2) {
+      sqls.push("insert into pt (p_id,t_num) values ((select p_id from pt where rowid = last_insert_rowid())," + req.body.type2 + ");");
+    }
+    //console.log(sqls);
+    for(let sql of sqls){
+      db.serialize( () => {
         db.all(sql, (error, data) => {
             if( error ) {
                 res.render('show', {mes:"エラーです"});
-            }
-            //console.log(data);    // ③
-            res.render('show', {mes:"追加しました"});
+            }    
         })
-    })
+      })
+    }
+    res.render('show', {mes:"変更しました"});
+})
+
+app.post("/pokemon/delete", (req, res) => {
+    //console.log(req.body.pop);    // ①
+    let sqls = [
+      "delete from pokemon where id = " + req.body.id + ";",
+      "delete from pt where p_id = " + req.body.id + ";"
+    ]
+    //console.log(sqls);    // ②
+    for(let sql of sqls){
+      db.serialize( () => {
+          db.all(sql, (error, data) => {
+              if( error ) {
+                  res.render('show', {mes:"エラーです"});
+              }
+          })
+      })
+    }
+    res.render('show', {mes:"削除しました"});
 })
 
 app.post("/pokemon/update", (req, res) => {

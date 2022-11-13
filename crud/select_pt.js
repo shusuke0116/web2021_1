@@ -12,7 +12,7 @@ db.serialize( () => {
 			return;
 		}
 		for( let data of row ) {
-        console.log(data);
-      }
+			console.log(data);
+		}
 	});
 });

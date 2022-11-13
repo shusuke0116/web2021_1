@@ -2,6 +2,7 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('test2.db');
 
 let sqls =[
+
   `insert into type (number,name) values (1,"ノーマル");`,
   `insert into type (number,name) values (2,"ほのお");`,
   `insert into type (number,name) values (3,"みず");`,
@@ -20,6 +21,7 @@ let sqls =[
   `insert into type (number,name) values (16,"あく");`,
   `insert into type (number,name) values (17,"はがね");`,
   `insert into type (number,name) values (18,"フェアリー");`
+ 
 ]
   
 

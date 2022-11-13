@@ -25,4 +25,3 @@ for(let sql of sqls){
   	});
   });  
 }
-
