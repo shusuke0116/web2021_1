@@ -54,7 +54,22 @@
         <option></option>
       <% } %>
     </select><br>
-    新たなタイプ：<input type=text" name="newtype" size="8">
+    新たなタイプ：<select name="newtype">
+      <% if(data[1]) { %>
+        <option></option>
+      <% for (let type of types){
+           if(type.number != data[0].typenum && type.number != data[1].typenum) { %>
+        <option value="<%= type.number %>"><%= type.name %></option>
+        <% } 
+        }
+      } else { 
+          for (let type of types){
+            if(type.number != data[0].typenum) { %>
+          <option value="<%= type.number %>"><%= type.name %></option>
+         <% }
+          }
+      }%>
+    </select>
     <input type="hidden" name="id" value="<%= data[0].id %>">
     <input type="submit" value="更新"><br>
   </form>

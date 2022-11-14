@@ -75,16 +75,27 @@ app.get("/pokemon/status/:id", (req, res) => {
 
 app.get("/pokemon/edit/:id", (req, res) => {
     //console.log(req.query.pop);    // ①
-    
+
+    let data;
+  
     let sql = "select pokemon.id,pokemon.number, pokemon.name,pokemon.attack,pokemon.defence,pokemon.hp,type.number as typenum, type.name as type from pokemon,pt inner join type on ( (pokemon.id=pt.p_id) and (type.number=pt.t_num) ) where pokemon.id = " + req.params.id + ";";
     //console.log(sql);    // ②
     db.serialize( () => {
-        db.all(sql, (error, data) => {
+        db.all(sql, (error, p_data) => {
+            if( error ) {
+                res.render('show', {mes:"エラーです"});
+            }
+            data = p_data;
+        })
+    })
+  　let newsql = "select number,name from type;"
+    db.serialize( () => {
+        db.all(newsql, (error, types) => {
             if( error ) {
                 res.render('show', {mes:"エラーです"});
             }
             //console.log(data);    // ③
-            res.render('edit_pokemon', {data:data});
+            res.render('edit_pokemon', {data:data,types:types});
         })
     })
 })
@@ -121,7 +132,7 @@ app.post("/pokemon/insert", (req, res) => {
       db.serialize( () => {
         db.all(sql, (error, data) => {
             if( error ) {
-                res.render('show', {mes:"エラーです"});
+                return res.render('show', {mes:"エラーです"});
             }    
         })
       })
@@ -140,7 +151,7 @@ app.post("/pokemon/delete", (req, res) => {
       db.serialize( () => {
           db.all(sql, (error, data) => {
               if( error ) {
-                  res.render('show', {mes:"エラーです"});
+                  return res.render('show', {mes:"エラーです"});
               }
           })
       })
@@ -168,11 +179,10 @@ app.post("/pokemon/update", (req, res) => {
 app.post("/pokemon/update/type", (req, res) => {
     //console.log(req.body.pop);    // ①
     if(req.body.newtype){
-      newtype = "(select number from type where type.name = '" + req.body.newtype + "')";
       if(req.body.typeup){
-        sql = "update pt set t_num = " + newtype + "where p_id = " + req.body.id + " and t_num = " + req.body.typeup + ";";
+        sql = "update pt set t_num = " + req.body.newtype + " where p_id = " + req.body.id + " and t_num = " + req.body.typeup + ";";
       } else{
-        sql = "insert into pt (p_id,t_num) values (" + req.body.id + "," + newtype + ");";
+        sql = "insert into pt (p_id,t_num) values (" + req.body.id + "," + req.body.newtype + ");";
       }
     } else {
       if(req.body.typeup){
