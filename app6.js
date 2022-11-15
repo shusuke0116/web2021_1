@@ -288,6 +288,68 @@ app.post("/type/insert", (req, res) => {
     })
 })
 
+/* calc */
+
+app.get("/calc/page/cp", (req, res) => {
+   
+    let sql = "select name from pokemon;";
+    //console.log(sql);    // ②
+    db.serialize( () => {
+        db.all(sql, (error, data) => {
+            if( error ) {
+                res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            res.render('calc_cp', {data:data});
+        })
+    })
+})
+
+app.post("/calc/cp", (req, res) => {
+    //console.log(req.body.attack);
+    let a;
+    let d;
+    let h;
+    let c;
+    let cp_num;
+    let scp;
+    let pl;
+   
+    let sql = "select attack,defence,hp from pokemon where name = '" + req.body.name + "';";
+    //console.log(sql);    // ②
+    db.serialize( () => {
+        db.all(sql, (error, data) => {
+            if( error ) {
+                return res.render('show', {mes:"エラーです"});
+            }
+            a = parseFloat(data[0].attack) + parseFloat(req.body.attack);
+            d = parseFloat(data[0].defence) + parseFloat(req.body.defence); 
+            h = parseFloat(data[0].hp) + parseFloat(req.body.hp); 
+        })
+    })
+
+    let newsql = "select pl,cpm from cp;";
+
+    db.serialize( () => {
+        db.all(newsql, (error, data) => {
+            if( error ) {
+                return res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            for(let cp of data){
+              cp_num = (a * Math.sqrt(d) * Math.sqrt(h) * parseFloat(cp.cpm) ** 2) / 10;
+              if(cp_num >= 1500){
+                return res.render('result_cp', {cp:c,pl:pl,scp:scp});
+              }
+              c = parseInt(cp_num);
+              scp = parseInt(((a * d * parseInt(h) * parseFloat(cp.cpm)**3) **0.66666666666) /10);
+              pl = parseFloat(cp.pl);
+            }
+            res.render('result_cp', {cp:c,pl:pl,scp:scp});
+        })
+    })
+})
+
 app.use(function(req, res, next) {
   res.status(404).send('ページが見つかりません');
 });

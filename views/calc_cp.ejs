@@ -1,0 +1,41 @@
+<!Doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>calculator</title>
+</head>
+<body>
+  <a href="/">トップページ</a>
+  <hr>
+  <h2>CP計算</h2>
+  <form action="/calc/cp" method="post">
+  <label for="name">ポケモン：</label>
+<input list="pokemon" id="name" name="name">
+<datalist id="pokemon">
+  <% for(let row of data){ %>
+    <option value="<%= row.name %>">
+    </option>
+  <% } %>
+</datalist><br>
+  攻撃：  
+  <select name="attack">
+    <% for(i=0;i<16;i++){ %>
+      <option value="<%= i %>"><%= i %></option>
+    <% } %>
+  </select>
+  防御：
+  <select name="defence">
+    <% for(i=0;i<16;i++){ %>
+      <option value="<%= i %>"><%= i %></option>
+    <% } %>
+  </select>
+  HP：
+  <select name="hp">
+    <% for(i=0;i<16;i++){ %>
+      <option value="<%= i %>"><%= i %></option>
+    <% } %>
+  </select>
+    <input type="submit" value="計算">
+  </form>
+</body>
+</html>
