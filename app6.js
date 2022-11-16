@@ -222,10 +222,26 @@ app.get("/type", (req, res) => {
     })
 })
 
-app.get("/type/edit/:id", (req, res) => {
+app.get("/type/status/:number", (req, res) => {
     //console.log(req.query.pop);    // ①
     
-    let sql = "select * from type where id = " + req.params.id + ";";
+    let sql = "select type.name,scale.value from type,compatibility inner join scale on ( (type.number = compatibility.type) and (compatibility.scale_id = scale.id) ) where compatibility.opponent = " + req.params.number + ";";
+    //console.log(sql);    // ②
+    db.serialize( () => {
+        db.all(sql, (error, data) => {
+            if( error ) {
+                res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            res.render('detail_type', {data:data});
+        })
+    })
+})
+
+app.get("/type/edit/:number", (req, res) => {
+    //console.log(req.query.pop);    // ①
+    
+    let sql = "select * from type where number = " + req.params.number + ";";
     //console.log(sql);    // ②
     db.serialize( () => {
         db.all(sql, (error, data) => {

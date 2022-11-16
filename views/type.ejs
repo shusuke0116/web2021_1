@@ -15,8 +15,8 @@
       <% for( let row of data ) { %>
         <tr>
             <td><%= row.number %></td>
-            <td><%= row.name %></td>
-            <td><a href="<%= '/type/edit/' + row.id %>">編集</a></td>
+            <td><a href="<%= '/type/status/' + row.number %>"><%= row.name %></a></td>
+            <td><a href="<%= '/type/edit/' + row.number %>">編集</a></td>
         </tr>
       <% } %>
   </table>

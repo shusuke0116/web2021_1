@@ -2,10 +2,11 @@ const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('test2.db');
 
 let schema = `
-create table pt(
-  p_id integer NOT NULL,
-  t_num integer NOT NULL,
-  primary key(p_id,t_num)
+create table compatibility(
+  id integer primary key,
+  type integer NOT NULL,
+  opponent integer NOT NULL,
+  scale_id integer NOT NULL
 );
 `
 

@@ -1,0 +1,23 @@
+<!Doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>edit_type</title>
+</head>
+<body>
+  <a href="/type">一覧に戻る</a>
+  <hr>
+  <p>弱点</p>
+  <% for( let row of data ) { 
+    if(row.value == "1.6"){ %>
+      <%= row.name %><%= " x" + row.value %><br>
+    <% } %>
+  <% } %>
+  <p>耐性</p>
+  <% for( let row of data ) { 
+    if(row.value != "1.6"){ %>
+      <%= row.name %><%= " x" + row.value %><br>
+    <% } %>
+  <% } %>
+</body>
+</html>
