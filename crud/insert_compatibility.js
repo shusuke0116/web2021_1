@@ -1,31 +1,35 @@
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('test2.db');
 
-let sqls =[
+let sql =
 
-  `insert into compatibility (type,opponent,scale_id) values (7,1,2);`,
-  `insert into compatibility (type,opponent,scale_id) values (14,1,3);`,
-  `insert into compatibility (type,opponent,scale_id) values (2,2,2);`,
-  `insert into compatibility (type,opponent,scale_id) values (3,2,1);`,
-  `insert into compatibility (type,opponent,scale_id) values (5,2,2);`,
-  `insert into compatibility (type,opponent,scale_id) values (6,2,2);`,
-  `insert into compatibility (type,opponent,scale_id) values (9,2,1);`,
-  `insert into compatibility (type,opponent,scale_id) values (12,2,2);`,
-  `insert into compatibility (type,opponent,scale_id) values (13,2,1);`,
-  `insert into compatibility (type,opponent,scale_id) values (17,2,2);`,
-  `insert into compatibility (type,opponent,scale_id) values (18,2,2);`,
- 
-]
-  
+  `insert into compatibility (type,opponent,scale_id) values 
+  (1,13,2),(1,14,3),(1,17,2),
+  (2,2,2),(2,3,2),(2,5,1),(2,6,1),(2,12,1),(2,13,2),(2,15,2),(2,17,1),
+  (3,2,1),(3,3,2),(3,5,2),(3,9,1),(3,13,1),(3,15,2),
+  (4,3,1),(4,4,2),(4,5,2),(4,9,3),(4,10,1),(4,15,2),
+  (5,2,2),(5,3,1),(5,5,2),(5,8,2),(5,9,1),(5,10,2),(5,12,2),(5,13,1),(5,15,2),(5,17,2),
+  (6,2,2),(6,3,2),(6,5,1),(6,6,2),(6,9,1),(6,10,1),(6,15,1),(6,17,2),
+  (7,1,1),(7,6,1),(7,8,2),(7,10,2),(7,11,2),(7,12,2),(7,13,1),(7,14,3),(7,16,1),(7,17,1),(7,18,2),
+  (8,5,1),(8,8,2),(8,9,2),(8,13,2),(8,14,2),(8,17,3),(8,18,1),
+  (9,2,1),(9,4,1),(9,5,2),(9,8,2),(9,10,3),(9,12,2),(9,13,1),(9,17,1),
+  (10,4,2),(10,5,1),(10,7,1),(10,12,1),(10,13,2),(10,17,2),
+  (11,7,1),(11,8,1),(11,11,2),(11,16,3),(11,17,2),
+  (12,2,2),(12,5,1),(12,7,2),(12,8,2),(12,10,2),(12,11,1),(12,14,2),(12,16,1),(12,17,2),(12,18,2),
+  (13,2,1),(13,6,1),(13,7,2),(13,9,2),(13,10,1),(13,12,1),(13,17,2),
+  (14,1,3),(14,11,1),(14,14,1),(14,16,2),
+  (15,15,1),(15,17,2),(15,18,3),
+  (16,7,2),(16,11,1),(16,14,1),(16,16,2),(16,18,2),
+  (17,2,2),(17,3,2),(17,4,2),(17,6,1),(17,13,1),(17,17,2),(17,18,1),
+  (18,2,2),(18,7,1),(18,8,2),(18,15,1),(18,16,1),(18,17,2)
+  ;`;
 
-for(let sql of sqls){
-  db.serialize( () => {
-	  db.run( sql, (error, row) => {
-	  	if(error) {
-	  		console.log('Error: ', error );
-		  	return;
-		  }
-		  console.log( "データを追加しました" );
-  	});
-  });  
-}
+db.serialize( () => {
+	db.run( sql, (error, row) => {
+	  if(error) {
+	  	console.log('Error: ', error );
+		  return;
+		}
+		console.log( "データを追加しました" );
+  });
+});  
