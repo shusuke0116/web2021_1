@@ -134,12 +134,9 @@ app.post("/pokemon/insert", (req, res) => {
       "insert into pokemon (number,name,attack,defence,hp)" 
       + " values (" + req.body.number + ",'" + req.body.name + area + "'," + req.body.attack + "," + req.body.defence + "," + req.body.hp + ");",
       "insert into pt (p_id,t_num)" 
-      + " values ((select id from pokemon where rowid = last_insert_rowid())," + req.body.type1 + ");"
+      + " values ((select id from pokemon where rowid = last_insert_rowid())," + req.body.type1 + ");",
+      "insert into pt (p_id,t_num) values ((select p_id from pt where rowid = last_insert_rowid())," + req.body.type2 + ");"
     ]
-  
-    if(req.body.type2) {
-      sqls.push("insert into pt (p_id,t_num) values ((select p_id from pt where rowid = last_insert_rowid())," + req.body.type2 + ");");
-    }
     //console.log(sqls);
     for(let sql of sqls){
       db.serialize( () => {
@@ -192,23 +189,9 @@ app.post("/pokemon/update", (req, res) => {
 
 app.post("/pokemon/update/type", (req, res) => {
     //console.log(req.body.pop);    // ①
-    if(req.body.newtype){
-      if(req.body.typeup){
-        sql = "update pt set t_num = " + req.body.newtype 
+    sql = "update pt set t_num = " + req.body.newtype 
           + " where p_id = " + req.body.id + " and t_num = " + req.body.typeup + ";";
-      } else{
-        sql = "insert into pt (p_id,t_num)" 
-          + " values (" + req.body.id + "," + req.body.newtype + ");";
-      }
-    } else {
-      if(req.body.typeup){
-        sql = "delete from pt" 
-          + " where p_id = " + req.body.id + " and t_num = " + req.body.typeup + ";";
-      } else {
-       return res.render('show', {mes:"変更するタイプを選択してください。"});
-      }
-      
-    }
+    
     //console.log(sql);    // ②
     db.serialize( () => {
         db.all(sql, (error, data) => {

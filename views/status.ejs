@@ -10,9 +10,12 @@
   <table>
     <p>No.<%= data[0].number %></p>
     <p><%= data[0].name %></p>
-    <p><%= data[0].type %>
-    <% if(data[1]){ %>
-      <%= "・" + data[1].type %>
+    <p>
+    <% if(data[0].type != "タイプなし"){ %>
+          <%= data[0].type %>
+    <% } 
+       if(data[1].type != "タイプなし") {%>
+        <%= data[1].type %>
     <% } %>
     </p>
       <tr>

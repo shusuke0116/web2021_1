@@ -12,13 +12,15 @@
   <h2>タイプ一覧</h2>
   <hr>
   <table border=1>
-      <% for( let row of data ) { %>
+      <% for( let row of data ) { 
+        if(row.number != 0) { %>
         <tr>
             <td><%= row.number %></td>
             <td><a href="<%= '/type/status/' + row.number %>"><%= row.name %></a></td>
             <td><a href="<%= '/type/edit/' + row.number %>">編集</a></td>
         </tr>
-      <% } %>
+      <% }
+      } %>
   </table>
   <a href="/">top page</a>
   <hr>

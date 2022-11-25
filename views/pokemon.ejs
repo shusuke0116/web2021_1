@@ -26,19 +26,31 @@
   </form>
   <table border=1>
       <tr>
+        <td></td>
         <td>図鑑番号</td>
         <td>名前</td>
         <td>タイプ</td>
       </tr>
-      <% for( let row of data ) { %>
-        <tr>
-            <td>No.<%= row.number %></td>
-            <td><a href="<%= '/pokemon/status/' + row.id %>"><%= row.name %></a></td>
-            <td><%= row.type %></td>
-            
-            <td><a href="<%= '/pokemon/edit/' + row.id %>">編集</a></td>
-        </tr>
-      <% } %>
+      <% let i = 1;
+        for( let row of data ) { 
+          if(i % 2 == 1){ %>
+          <tr>
+              <td><a href="<%= '/pokemon/edit/' + row.id %>">編集</a></td>
+              <td>No.<%= row.number %></td>
+              <td><a href="<%= '/pokemon/status/' + row.id %>"><%= row.name %></a></td>
+              <td>
+              <% if(row.type != "タイプなし") { %>
+                <%= row.type %>
+              <% } %>            
+      <%  } else { 
+                if(row.type != "タイプなし") { %>
+                  <%= row.type %>
+          <%    }  %>
+             </td>
+            </tr>
+         <%  }
+            i++;
+        } %>
   </table>
   <hr>
   <details>

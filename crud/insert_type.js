@@ -4,6 +4,7 @@ const db = new sqlite3.Database('test2.db');
 let sql =
 
   `insert into type (number,name) values 
+  (0,"タイプなし"),
   (1,"ノーマル"),
   (2,"ほのお"),
   (3,"みず"),

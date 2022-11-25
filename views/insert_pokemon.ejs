@@ -8,7 +8,7 @@
   <a href="/pokemon">一覧に戻る</a>
   <hr>
   <form action="/pokemon/insert" method="post">
-    図鑑番号：<input type="number" name="number" required>（半角数字）<br>
+    図鑑番号：<input type="number" name="number" min="1" required>（半角数字）<br>
     名前：<input type=text" name="name" size = 6 pattern="[\u30A1-\u30F6]*" required>（全角カタカナ）<br>
     （リージョンフォーム
     <select name="area">
@@ -19,20 +19,24 @@
       <option value="（パルデア）">パルデアのすがた</option>
     </select>
     ）<br>
-    攻撃種族値：<input type="number" name="attack" required>（半角数字）<br>
-    防御種族値：<input type="number" name="defence" required>（半角数字）<br>
-    HP種族値：<input type="number" name="hp" required>（半角数字）<br>
+    攻撃種族値：<input type="number" name="attack" min="1" required>（半角数字）<br>
+    防御種族値：<input type="number" name="defence" min="1" required>（半角数字）<br>
+    HP種族値：<input type="number" name="hp" min="1" required>（半角数字）<br>
     タイプ：
     <select name="type1">
-      <% for(let row of data){ %>
-      <option value="<%= row.number %>"><%= row.name %></option>
-      <% } %>
+      <% for(let row of data){ 
+           if(row.name != "タイプなし"){%>
+             <option value="<%= row.number %>"><%= row.name %></option>
+      <%   }
+         } %>
     </select>
     <select name="type2">
-      <option></option>
-      <% for(let row of data){ %>
-      <option value="<%= row.number %>"><%= row.name %></option>
-      <% } %><br>
+      <option value="0"></option>
+      <% for(let row of data){ 
+           if(row.name != "タイプなし"){%>
+             <option value="<%= row.number %>"><%= row.name %></option>
+      <%   }
+         } %>
     </select>
     <input type="submit" value="追加"><br>
   </form>
