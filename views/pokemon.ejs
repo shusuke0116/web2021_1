@@ -20,7 +20,14 @@
         <label for="desc">降順</label><br>
         表示数：<input type="number" name="top" id="top" size="3">
         <label for="top">表示数</label><br>
-        タイプ：<input type=text" name="type" id="type"　pattern="[\u3041-\u3096]*">
+        タイプ：<select name="type">
+          <option></option>
+        <% for (let type of types){
+             if(type.name != "タイプなし"){ %>
+              <option value="<%= type.number %>"><%= type.name %></option>
+         <%  } 
+           } %>     
+    </select>
         <input type="submit" value="検索"><br>
     </details>
   </form>

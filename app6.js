@@ -18,28 +18,48 @@ app.get("/", (req, res) => {
 
 app.get("/pokemon", (req, res) => {
     //console.log(req.query.pop);    // ①
+
+    if( req.query.type ) type = " where pokemon.id in("
+      + "select distinct(pokemon.id)"
+      + " from pokemon,pt inner join type" 
+      + " on ( (pokemon.id=pt.p_id) and (type.number=pt.t_num) )"
+      + " where type.number = " + req.query.type
+      + ")"
+    else type = "";
+
+    let p_data;
+  
     if( req.query.order ) order = " order by pokemon.name";
     else order = " order by pokemon.number";
     if( req.query.desc ) desc = " desc";  
     else desc = "";
-    if( req.query.top ) top = " limit " + req.query.top;
+    if( req.query.top ) top = " limit " + parseInt(req.query.top) * 2;
     else top = "";
-    if( req.query.type ) type = " where type.name = '" + req.query.type + "'";  
-    else type = "";
     
     let sql = "select pokemon.id,pokemon.number, pokemon.name,type.name as type"
       + " from pokemon,pt inner join type" 
       + " on ( (pokemon.id=pt.p_id) and (type.number=pt.t_num) )" 
-      + order + desc + top + ";";
+      + type + order + desc + top + ";";
 
     //console.log(sql);    // ②
     db.serialize( () => {
         db.all(sql, (error, data) => {
             if( error ) {
+                return res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            p_data = data;
+        })
+    })
+
+    let newsql = "select number,name from type;"
+    db.serialize( () => {
+        db.all(newsql, (error, types) => {
+            if( error ) {
                 res.render('show', {mes:"エラーです"});
             }
             //console.log(data);    // ③
-            res.render('pokemon', {data:data});
+            res.render('pokemon', {data:p_data,types:types});
         })
     })
 })
@@ -371,6 +391,8 @@ app.post("/calc/cp", (req, res) => {
         })
     })
 })
+
+/* */
 
 app.use(function(req, res, next) {
   res.status(404).send('ページが見つかりません');
