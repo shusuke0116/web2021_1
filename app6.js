@@ -19,14 +19,6 @@ app.get("/", (req, res) => {
 app.get("/pokemon", (req, res) => {
     //console.log(req.query.pop);    // ①
 
-    if( req.query.type ) type = " where pokemon.id in("
-      + "select distinct(pokemon.id)"
-      + " from pokemon,pt inner join type" 
-      + " on ( (pokemon.id=pt.p_id) and (type.number=pt.t_num) )"
-      + " where type.number = " + req.query.type
-      + ")"
-    else type = "";
-
     let p_data;
   
     if( req.query.order ) order = " order by pokemon.name";
@@ -35,11 +27,20 @@ app.get("/pokemon", (req, res) => {
     else desc = "";
     if( req.query.top ) top = " limit " + parseInt(req.query.top) * 2;
     else top = "";
+    if( req.query.type ) type = " where pokemon.id in("
+      + "select distinct(pokemon.id)"
+      + " from pokemon,pt inner join type" 
+      + " on ( (pokemon.id=pt.p_id) and (type.number=pt.t_num) )"
+      + " where type.number = " + req.query.type
+      + ")"
+    else type = "";
+    if( req.query.p_name ) p_name = " where pokemon.name = '" + req.query.p_name + "'";
+    else p_name = "";
     
     let sql = "select pokemon.id,pokemon.number, pokemon.name,type.name as type"
       + " from pokemon,pt inner join type" 
       + " on ( (pokemon.id=pt.p_id) and (type.number=pt.t_num) )" 
-      + type + order + desc + top + ";";
+      + type + p_name + order + desc + top + ";";
 
     //console.log(sql);    // ②
     db.serialize( () => {
@@ -66,6 +67,7 @@ app.get("/pokemon", (req, res) => {
 
 app.get("/pokemon/status", (req, res) => {
     //console.log(req.query.pop);    // ①
+    let p_data;
     
     let sql = "select pokemon.id,pokemon.number, pokemon.name,pokemon.attack,pokemon.defence,pokemon.hp,type.name as type" 
       + " from pokemon,pt inner join type" 
@@ -74,10 +76,27 @@ app.get("/pokemon/status", (req, res) => {
     db.serialize( () => {
         db.all(sql, (error, data) => {
             if( error ) {
-                res.render('show', {mes:"エラーです"});
+                return res.render('show', {mes:"エラーです"});
             }
             //console.log(data);    // ③
-            res.render('status', {data:data});
+            p_data = data;
+        })
+    })
+
+    let newsql = "select type.name,scale.value" 
+      + " from type,compatibility inner join scale" 
+      + " on ( (type.number = compatibility.type) and (compatibility.scale_id = scale.id) )" 
+      + " where compatibility.opponent = " + req.params.number 
+      + " or compatibility.opponent = " + req.params.number
+      + ";";
+    //console.log(sql);    // ②
+    db.serialize( () => {
+        db.all(newsql, (error, types) => {
+            if( error ) {
+                return res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            res.render('status', {data:p_data,types:types});
         })
     })
 })

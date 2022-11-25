@@ -31,5 +31,20 @@
           <td><%= data[0].hp %></td>
       </tr>
     </table>
+
+    <hr>
+    <p>弱点</p>
+    <% for( let row of data ) { 
+      if(row.value >= 1){ %>
+        <%= row.name %><%= " x" + row.value %><br>
+      <% } %>
+    <% } %>
+    <p>耐性</p>
+    <% for( let row of data ) { 
+      if(row.value <= 1){ %>
+        <%= row.name %><%= " x" + row.value %><br>
+      <% } %>
+    <% } %>
+      
 </body>
 </html>

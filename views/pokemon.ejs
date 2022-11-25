@@ -27,7 +27,17 @@
               <option value="<%= type.number %>"><%= type.name %></option>
          <%  } 
            } %>     
-    </select>
+        </select><br>
+        ポケモン：<input list="pokemon" id="p_name" name="p_name">
+        <datalist id="pokemon">
+        <% let m = 0;
+          for(let row of data){ 
+            if(m % 2 == 1){ %>
+          <option value="<%= row.name %>"></option>
+        <%   } 
+            m++;
+          }%>
+        </datalist><br>   
         <input type="submit" value="検索"><br>
     </details>
   </form>
