@@ -34,7 +34,7 @@
     </table>
   <hr>
   <h3>このポケモンの情報を更新する</h3>
-  <form action="/pokemon/update" method="post">
+  <form action="/pokemon/update" method="post" autocomplete="off">
     <select name="up">
       <option value="number">図鑑番号</option>
       <option value="name">名前</option>
@@ -57,7 +57,7 @@
         <option value="<%= data[0].typenum %>"><%= data[0].type %></option>
         <option value="<%= data[1].typenum %>"><%= data[1].type %></option>
       <% } %>
-    </select><br>
+    </select>
     新たなタイプ：<select name="newtype">
       <% for (let type of types){
           if(type.number != data[0].typenum && type.number != data[1].typenum) { 

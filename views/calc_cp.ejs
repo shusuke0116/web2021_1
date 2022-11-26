@@ -7,8 +7,8 @@
 <body>
   <a href="/">トップページ</a>
   <hr>
-  <h2>CP計算</h2>
-  <form action="/calc/cp" method="post">
+  <h2>ステータス計算</h2>
+  <form action="/calc/cp" method="post" autocomplete="off">
   <label for="name">ポケモン：</label>
 <input list="pokemon" id="name" name="name">
 <datalist id="pokemon">
@@ -37,5 +37,13 @@
   </select>
     <input type="submit" value="計算">
   </form>
+  <hr>
+  <details>
+    <summary>使い方</summary>
+      <p>「ポケモン」の右のテキストボックスにポケモンの名前を入力する。</p>
+      <p>「攻撃」「防御」「HP」の個体値を右の選択肢から選択する。</p>
+      <p>計算ボタンを押すとそのポケモンのレギュレーションごとのステータスを計算できる。</p>
+      
+  </details>
 </body>
 </html>

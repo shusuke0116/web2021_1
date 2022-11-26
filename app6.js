@@ -103,6 +103,7 @@ app.get("/pokemon/status", (req, res) => {
 
 app.get("/pokemon/status/:id", (req, res) => {
     //console.log(req.query.pop);    // ①
+    let p_data;
     
     let sql = "select pokemon.id,pokemon.number, pokemon.name,pokemon.attack,pokemon.defence,pokemon.hp,type.name as type" 
       + " from pokemon,pt inner join type on" 
@@ -112,10 +113,27 @@ app.get("/pokemon/status/:id", (req, res) => {
     db.serialize( () => {
         db.all(sql, (error, data) => {
             if( error ) {
-                res.render('show', {mes:"エラーです"});
+                return res.render('show', {mes:"エラーです"});
             }
             //console.log(data);    // ③
-            res.render('status', {data:data});
+            a = parseFloat(data[0].attack) + 15;
+            d = parseFloat(data[0].defence) + 15; 
+            h = parseFloat(data[0].hp) + 15; 
+            p_data = data;
+        })
+    })
+
+    let c;
+    let newsql = "select cpm from cp order by pl desc limit 1;";
+    
+    db.serialize( () => {
+        db.all(newsql, (error, data) => {
+            if( error ) {
+                return res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            c = parseInt((a * Math.sqrt(d) * Math.sqrt(h) * parseFloat(data[0].cpm) ** 2) / 10);
+            res.render('status', {data:p_data,cp:c});
         })
     })
 })
@@ -367,16 +385,15 @@ app.get("/calc/page/cp", (req, res) => {
 
 app.post("/calc/cp", (req, res) => {
     //console.log(req.body.attack);
+    if(req.body.name) name = req.body.name;
+    else return res.render('show', {mes:"ポケモンを選択してください"});
+    
     let a;
     let d;
     let h;
-    let c;
-    let cp_num;
-    let scp;
-    let pl;
    
     let sql = "select attack,defence,hp from pokemon" 
-      + " where name = '" + req.body.name + "';";
+      + " where name = '" + name + "';";
     //console.log(sql);    // ②
     db.serialize( () => {
         db.all(sql, (error, data) => {
@@ -389,6 +406,14 @@ app.post("/calc/cp", (req, res) => {
         })
     })
 
+    let su = [];
+    let hy = [];
+    let ma = [];
+    let st = [3];
+    let c;
+    let scp;
+    let pl;
+
     let newsql = "select pl,cpm from cp;";
 
     db.serialize( () => {
@@ -398,15 +423,21 @@ app.post("/calc/cp", (req, res) => {
             }
             //console.log(data);    // ③
             for(let cp of data){
-              cp_num = (a * Math.sqrt(d) * Math.sqrt(h) * parseFloat(cp.cpm) ** 2) / 10;
-              if(cp_num >= 1500){
-                return res.render('result_cp', {cp:c,pl:pl,scp:scp});
-              }
-              c = parseInt(cp_num);
+              c = parseInt((a * Math.sqrt(d) * Math.sqrt(h) * parseFloat(cp.cpm) ** 2) / 10);
               scp = parseInt(((a * d * parseInt(h) * parseFloat(cp.cpm)**3) **0.66666666666) /10);
               pl = parseFloat(cp.pl);
+              st[0] = (a * parseFloat(cp.cpm));
+              st[1] = (d * parseFloat(cp.cpm));
+              st[2] = parseInt((h * parseFloat(cp.cpm)));
+              if(c <= 1500){
+                su= [pl,c,scp,st[0],st[1],st[2]];
+              } else if(c <= 2500){
+                hy= [pl,c,scp,st[0],st[1],st[2]];
+              }          
             }
-            res.render('result_cp', {cp:c,pl:pl,scp:scp});
+            if(hy.length == 0) hy = [pl,c,scp,st[0],st[1],st[2]];
+            ms = [pl,c,scp,st[0],st[1],st[2]];
+            res.render('result_cp', {su:su,hy:hy,ms:ms});
         })
     })
 })

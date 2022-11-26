@@ -7,7 +7,8 @@
 <body>
   <a href="/type">一覧に戻る</a>
   <hr>
-  <form action="/type/insert" method="post">
+  <h2>タイプを追加する</h2>
+  <form action="/type/insert" method="post" autocomplete="off">
     タイプ番号：<input type="number" name="number" min="1" required>（半角数字）<br>
     タイプ名：<input type=text" name="name" required>（全角ひらがな又は全角カタカナ）<br>
     <input type="submit" value="追加"><br>

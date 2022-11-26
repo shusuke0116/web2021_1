@@ -15,26 +15,30 @@
       <% for( let row of data ) { 
         if(row.number != 0) { %>
         <tr>
+            <td><a href="<%= '/type/edit/' + row.number %>">編集</a></td>
             <td><%= row.number %></td>
             <td><a href="<%= '/type/status/' + row.number %>"><%= row.name %></a></td>
-            <td><a href="<%= '/type/edit/' + row.number %>">編集</a></td>
         </tr>
       <% }
       } %>
   </table>
-  <a href="/">top page</a>
   <hr>
   <details>
     <summary>使い方</summary>
+      <p>一覧は番号順になっている。</p>
       <details>
-        <summary>並び</summary>
-          <p>一覧は番号順になっている。</p>
+        <summary>名前のリンク</summary>
+          <p>タイプの名前を押すことでそのポケモンの詳細ページに飛ぶことができる。</p>
+          <p>詳細では、タイプ相性を確認することができる。</p>
       </details>
+        
       <details>
         <summary>編集リンク</summary>
           <p>編集リンクを押すことでそのタイプの編集ページに行くことができる。</p>
           <p>編集ページでは、そのタイプの情報について削除ができる。</p>
       </details>
   </details>
+  <hr>
+        <a href="/">トップページ</a>
 </body>
 </html>

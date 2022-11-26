@@ -9,14 +9,40 @@
   <hr>
   <table border=1>
       <tr>
+        <td></td>
         <td>pl</td>
         <td>CP</td>
         <td>SCP</td>
+        <td>攻撃力</td>
+        <td>防御力</td>
+        <td>HP</td>
       </tr>
       <tr>
-        <td><%= pl %></td>
-        <td><%= cp %></td>
-        <td><%= scp %></td>
+        <td>スーパー</td>
+        <td><%= su[0] %></td>
+        <td><%= su[1] %></td>
+        <td><%= su[2] %></td>
+        <td><%= su[3].toFixed(1) %></td>
+        <td><%= su[4].toFixed(1) %></td>
+        <td><%= su[5] %></td>
+      </tr>
+      <tr>
+        <td>ハイパー</td>
+        <td><%= hy[0] %></td>
+        <td><%= hy[1] %></td>
+        <td><%= hy[2] %></td>
+        <td><%= hy[3].toFixed(1) %></td>
+        <td><%= hy[4].toFixed(1) %></td>
+        <td><%= hy[5] %></td>
+      </tr>
+      <tr>
+        <td>マスター</td>
+        <td><%= ms[0] %></td>
+        <td><%= ms[1] %></td>
+        <td><%= ms[2] %></td>
+        <td><%= ms[3].toFixed(1) %></td>
+        <td><%= ms[4].toFixed(1) %></td>
+        <td><%= ms[5] %></td>
       </tr>
   </table>
 </body>
