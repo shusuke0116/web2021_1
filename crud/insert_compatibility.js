@@ -3,7 +3,7 @@ const db = new sqlite3.Database('test2.db');
 
 let sql =
 
-  `insert into compatibility (type,opponent,scale_id) values 
+  `insert into compatibility (type,opponent,s_id) values 
   (1,13,2),(1,14,3),(1,17,2),
   (2,2,2),(2,3,2),(2,5,1),(2,6,1),(2,12,1),(2,13,2),(2,15,2),(2,17,1),
   (3,2,1),(3,3,2),(3,5,2),(3,9,1),(3,13,1),(3,15,2),

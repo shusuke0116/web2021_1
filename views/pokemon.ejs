@@ -14,8 +14,9 @@
   <form action="/pokemon">
     <details>
       <summary>並び替え・絞り込み</summary>
-        <input type="checkbox" name="order" id="order">
-        <label for="name">名前順</label>
+        <input type="radio" name="order" value="number" checked>番号順
+        <input type="radio" name="order" value="name">名前順
+        <input type="radio" name="order" value="id">追加日順
         <input type="checkbox" name="desc" id="desc">
         <label for="desc">降順</label><br>
         表示数：<input type="number" name="top" id="top" size="3">
@@ -54,7 +55,7 @@
           <tr>
               <td><a href="<%= '/pokemon/edit/' + row.id %>">編集</a></td>
               <td>No.<%= row.number %></td>
-              <td><a href="<%= '/pokemon/status/' + row.id %>"><%= row.name %></a></td>
+              <td><a href="<%= '/pokemon/detail/' + row.id %>"><%= row.name %></a></td>
               <td>
               <% if(row.type != "タイプなし") { %>
                 <%= row.type %>

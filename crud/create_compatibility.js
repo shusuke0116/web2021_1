@@ -6,7 +6,7 @@ create table compatibility(
   id integer primary key,
   type integer NOT NULL,
   opponent integer NOT NULL,
-  scale_id integer NOT NULL
+  s_id integer NOT NULL
 );
 `
 
