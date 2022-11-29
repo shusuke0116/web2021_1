@@ -17,6 +17,7 @@ app.get("/", (req, res) => {
 
 app.get("/pokemon", (req, res) => {
     //console.log(req.query.pop);    // ①
+    let mes = "";
   
     if( req.query.order ) order = " order by pokemon." + req.query.order;
     else order = "order by pokemon.number";
@@ -24,21 +25,27 @@ app.get("/pokemon", (req, res) => {
     else desc = "";
     if( req.query.top ) top = " limit " + req.query.top * 2;
     else top = "";
-    if( req.query.type ) type = " where pokemon.id in("
+    let search = "";
+    if( req.query.type ){
+      search = " where pokemon.id in("
       + "select distinct(pokemon.id)"
       + " from pokemon,pt inner join type" 
       + " on ( (pokemon.id=pt.p_id) and (type.number=pt.t_num) )"
       + " where type.number = " + req.query.type
-      + ")"
-    else type = "";
-    if( req.query.p_name ) p_name = " where pokemon.name = '" + req.query.p_name + "'";
-    else p_name = "";
-
+      + ")";
+    } 
+    if(req.query.p_name){
+      if(req.query.type) search = " and"
+      else search = " where"    
+      search = search + " pokemon.name like '" + req.query.p_name + "%'";
+      mes = mes + "「" + req.query.p_name + "」";
+    } 
+    
     let p_data;
     let sql = "select pokemon.id,pokemon.number, pokemon.name,type.name as type"
       + " from pokemon,pt inner join type" 
       + " on ( (pokemon.id=pt.p_id) and (type.number=pt.t_num) )" 
-      + type + p_name + order + desc + top + ";";
+      + search + order + desc + top + ";";
 
     //console.log(sql);    // ②
     db.serialize( () => {
@@ -58,7 +65,12 @@ app.get("/pokemon", (req, res) => {
                 res.render('show', {mes:"エラーです"});
             }
             //console.log(data);    // ③
-            res.render('pokemon', {data:p_data,types:types});
+            if(req.query.type){
+              for(let row of types){
+                if(req.query.type == row.number) mes = mes + row.name + "タイプ";
+              }
+            }         
+            res.render('pokemon', {data:p_data,types:types,mes:mes});
         })
     })
 })
@@ -99,7 +111,7 @@ app.get("/pokemon/detail", (req, res) => {
 })
 
 app.get("/pokemon/detail/:id", (req, res) => {
-    //console.log(req.query.pop);    // ①
+    console.log(req.params.id);    // ①
     let p_data;  
     let sql = "select pokemon.id,pokemon.number, pokemon.name,pokemon.attack,pokemon.defence,pokemon.hp,type.name as type" 
       + " from pokemon,pt inner join type on" 
@@ -389,18 +401,20 @@ app.post("/calc/cp", (req, res) => {
     //console.log(req.body.attack);
     if(req.body.name) name = req.body.name;
     else return res.render('show', {mes:"ポケモンを選択してください"});
-    
+
+    let id;
     let a;
     let d;
     let h; 
-    let sql = "select attack,defence,hp from pokemon" 
-      + " where name = '" + name + "';";
+    let sql = "select id,attack,defence,hp from pokemon" 
+      + " where name like '" + name + "%' limit 1;";
     //console.log(sql);    // ②
     db.serialize( () => {
         db.all(sql, (error, data) => {
             if( error ) {
                 return res.render('show', {mes:"エラーです"});
             }
+            id = data[0].id;
             a = data[0].attack　+ parseInt(req.body.attack);
             d = data[0].defence + parseInt(req.body.defence); 
             h = data[0].hp + parseInt(req.body.hp); 
@@ -437,7 +451,7 @@ app.post("/calc/cp", (req, res) => {
             }
             if(hy.length == 0) hy = [pl,c,scp,st[0],st[1],st[2]];
             ms = [pl,c,scp,st[0],st[1],st[2]];
-            res.render('cp_result', {su:su,hy:hy,ms:ms});
+            res.render('cp_result', {id:id,name:name,su:su,hy:hy,ms:ms});
         })
     })
 })

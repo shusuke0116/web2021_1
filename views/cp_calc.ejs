@@ -10,7 +10,7 @@
   <h2>個体値計算</h2>
   <form action="/calc/cp" method="post" autocomplete="off">
   <label for="name">ポケモン：</label>
-<input list="pokemon" id="name" name="name">
+<input list="pokemon" id="name" name="name" required>
 <datalist id="pokemon">
   <% for(let row of data){ %>
     <option value="<%= row.name %>">
