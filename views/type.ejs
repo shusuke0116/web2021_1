@@ -11,7 +11,43 @@
   <hr>
   <h2>タイプ一覧</h2>
   <hr>
+  <form action="/type">
+    <details>
+      <summary>並び替え・絞り込み</summary>
+        <input type="radio" name="order" value="number" checked>番号順
+        <input type="radio" name="order" value="name">名前順
+        <input type="checkbox" name="desc" id="desc">
+        <label for="desc">降順</label><br>
+        <p>
+        タイプ：
+        <select name="type">
+        <option></option>
+        <% for (let type of types){
+             if(type.name != "タイプなし"){ %>
+              <option value="<%= type.number %>"><%= type.name %></option>
+         <%  } 
+           } %>     
+        </select>
+        <select name="sc">
+          <option></option>
+          <option value="1">にこうかばつぐん</option>
+          <option value="2">にこうかいまひとつ</option>
+          <option value="3">が弱点</option>
+          <option value="4">に耐性がある</option>
+        </select>
+        </p>
+        <input type="submit" value="検索"><br>
+    </details>
+  </form>
+  <% if(mes != ""){ %>
+    <%= "検索条件：" + mes %><br>
+  <% } %>
   <table border=1>
+      <tr>
+        <td></td>
+        <td>番号</td>
+        <td>タイプ名</td>
+      </tr>
       <% for( let row of data ) { 
         if(row.number != 0) { %>
         <tr>
@@ -25,13 +61,26 @@
   <hr>
   <details>
     <summary>使い方</summary>
-      <p>一覧は番号順になっている。</p>
+      <details>
+        <summary>並び替え・絞り込み</summary>
+        　　<p>一覧の表示は、デフォルトでは番号順（昇順）になっている。</p>
+          <p>下記の変更は検索ボタンを押すことで反映される。</p>
+          <p>並び替えについて</p>
+            <ul>
+              <li>「番号順」「名前順」のいずれかにチェックを入れると表示する順番を変更できる。</li>
+              <li>「降順」にチェックを入れると降順に表示されるように変更できる。</li>
+            </ul>
+            <p>絞り込みについて</p>
+            <ul>
+              <li>「タイプ」の右にあるボックスからタイプを選択するとそのタイプのみ表示することができる。</li>
+              <li>さらに右のボックスからタイプ相性を選択することで、対応したタイプのみを表示することができる。</li>
+            </ul>
+      </details>
       <details>
         <summary>名前のリンク</summary>
           <p>タイプの名前を押すことでそのポケモンの詳細ページに飛ぶことができる。</p>
           <p>詳細では、タイプ相性を確認することができる。</p>
       </details>
-        
       <details>
         <summary>編集リンク</summary>
           <p>編集リンクを押すことでそのタイプの編集ページに行くことができる。</p>

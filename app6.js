@@ -20,7 +20,7 @@ app.get("/pokemon", (req, res) => {
     let mes = "";
   
     if( req.query.order ) order = " order by pokemon." + req.query.order;
-    else order = "order by pokemon.number";
+    else order = " order by pokemon.number";
     if( req.query.desc ) desc = " desc";  
     else desc = "";
     if( req.query.top ) top = " limit " + req.query.top * 2;
@@ -58,11 +58,12 @@ app.get("/pokemon", (req, res) => {
         })
     })
 
+    let type;
     let newsql = "select number,name from type;"
     db.serialize( () => {
         db.all(newsql, (error, types) => {
             if( error ) {
-                res.render('show', {mes:"エラーです"});
+                return res.render('show', {mes:"エラーです"});
             }
             //console.log(data);    // ③
             if(req.query.type){
@@ -70,7 +71,17 @@ app.get("/pokemon", (req, res) => {
                 if(req.query.type == row.number) mes = mes + row.name + "タイプ";
               }
             }         
-            res.render('pokemon', {data:p_data,types:types,mes:mes});
+            type = types;
+        })
+    })
+    let ssql = "select name from pokemon;"
+    db.serialize( () => {
+        db.all(ssql, (error, poke) => {
+            if( error ) {
+                res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            res.render('pokemon', {data:p_data,types:type,poke:poke,mes:mes});
         })
     })
 })
@@ -281,14 +292,71 @@ app.post("/pokemon/update/type", (req, res) => {
 
 app.get("/type", (req, res) => {
     //console.log(req.query.pop);    // ①
-    let sql = "select * from type order by number;";
+    let t_data;
+    let mes = "";
+    let m = "";
+    if( req.query.order ) order = " order by type." + req.query.order;
+    else order = " order by type.number";
+    if( req.query.desc ) desc = " desc";  
+    else desc = "";
+  
+    if( req.query.type ){
+      if(req.query.sc){
+        if(req.query.sc == "1") {
+          n = "";
+          se = " type";
+          wh = " opponent";
+          m = m + "にこうかばつぐん"
+        } else if(req.query.sc == "2") {
+          n = " not";
+          se = " type";
+          wh = " opponent";
+          m = m + "にこうかいまひとつ"
+        }else if(req.query.sc == "3") {
+          n = "";
+          se = " opponent";
+          wh = " type";
+          m = m + "が弱点"
+        }else {
+          n = " not";
+          se = " opponent";
+          wh = " type";
+          m = m + "に耐性がある"
+        }
+        search = " where type.number in("  
+          + "select" + se + " from compatibility" 
+          + " where " + wh + " = " + req.query.type + " and" + n + " s_id = 1)";   
+      }
+      else search = " where type.number = " + req.query.type;
+   }
+    else search = "";
+ 
+    let sql = "select * from type" 
+      + search + order + desc + ";";
+    //console.log(sql);
     db.serialize( () => {
         db.all(sql, (error, data) => {
             if( error ) {
-                res.render('show', {mes:"エラーです"});
+                return res.render('show', {mes:"エラーです"});
             }
             //console.log(data);    // ③
-            res.render('type', {data:data});
+            t_data = data;
+        })
+    })
+  
+    let newsql = "select * from type order by number;";
+    db.serialize( () => {
+        db.all(newsql, (error, types) => {
+            if( error ) {
+                return res.render('show', {mes:"エラーです"});
+            }
+            //console.log(types);    // ③
+            for(let row of types){
+                if(req.query.type == row.number){
+                  mes = mes + "「" + row.name + "タイプ」" + m;
+                } 
+            }
+            res.render('type', {data:t_data,mes:mes,types:types});
         })
     })
 })

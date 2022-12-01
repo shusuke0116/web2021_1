@@ -32,7 +32,7 @@
         ポケモン：<input list="pokemon" id="p_name" name="p_name" autocomplete="off">
         <datalist id="pokemon">
         <% let m = 0;
-          for(let row of data){ 
+          for(let row of poke){ 
             if(m % 2 == 1){ %>
           <option value="<%= row.name %>"></option>
         <%   } 
@@ -79,11 +79,11 @@
     <summary>使い方</summary>
       <details>
         <summary>並び替え・絞り込み</summary>
-          <p>一覧の表示は、デフォルトでは番号順（昇順）になっている。</p>
+        　　<p>一覧の表示は、デフォルトでは番号順（昇順）になっている。</p>
           <p>下記の変更は検索ボタンを押すことで反映される。</p>
           <p>並び替えについて</p>
             <ul>
-              <li>「名前順」にチェックを入れると名前順に表示されるよう変更できる。</li>
+              <li>「番号順」「名前順」「追加日順」のいずれかにチェックを入れると表示する順番を変更できる。</li>
               <li>「降順」にチェックを入れると降順に表示されるように変更できる。</li>
             </ul>
             <p>表示数について</p>
