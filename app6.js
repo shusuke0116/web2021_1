@@ -470,6 +470,10 @@ app.post("/calc/cp", (req, res) => {
     if(req.body.name) name = req.body.name;
     else return res.render('show', {mes:"ポケモンを選択してください"});
 
+    let mes = "攻撃：" + req.body.attack 
+      + "　防御：" + req.body.defence
+      + "　HP：" + req.body.hp; 
+
     let id;
     let a;
     let d;
@@ -519,7 +523,7 @@ app.post("/calc/cp", (req, res) => {
             }
             if(hy.length == 0) hy = [pl,c,scp,st[0],st[1],st[2]];
             ms = [pl,c,scp,st[0],st[1],st[2]];
-            res.render('cp_result', {id:id,name:name,su:su,hy:hy,ms:ms});
+            res.render('cp_result', {id:id,name:name,su:su,hy:hy,ms:ms,mes:mes});
         })
     })
 })
