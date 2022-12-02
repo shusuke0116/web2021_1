@@ -2,22 +2,29 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>edit_type</title>
+  <title>detail_type</title>
 </head>
 <body>
   <a href="/type">一覧に戻る</a>
   <hr>
-  <p>弱点</p>
-  <% for( let row of data ) { 
-    if(row.value >= 1){ %>
-      <%= row.name %><%= " x" + row.value %><br>
-    <% } %>
+  <h2><%= type %>タイプの相性</h2>
+  <p>攻撃する場合</p>
+  <table>
+  <% for( let row of at_data ) { %>
+    <tr>
+      <td><%= row.name %></td>
+      <td><%= " x" + row.value %></td>
+    </tr>
   <% } %>
-  <p>耐性</p>
-  <% for( let row of data ) { 
-    if(row.value <= 1){ %>
-      <%= row.name %><%= " x" + row.value %><br>
-    <% } %>
+  </table>
+  <p>攻撃を受ける場合</p>
+  <table>
+  <% for( let row of df_data ) { %>
+    <tr>
+      <td><%= row.name %></td>
+      <td><%= " x" + row.value %></td>
+    </tr>
   <% } %>
+  </table>
 </body>
 </html>

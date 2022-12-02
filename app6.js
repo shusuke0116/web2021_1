@@ -363,19 +363,53 @@ app.get("/type", (req, res) => {
 
 app.get("/type/detail/:number", (req, res) => {
     //console.log(req.query.pop);    // ①
+    let at_data;
+    let df_data
     
     let sql = "select type.name,scale.value" 
       + " from type,compatibility inner join scale" 
-      + " on ( (type.number = compatibility.type) and (compatibility.s_id = scale.id) )" 
-      + " where compatibility.opponent = " + req.params.number + ";";
+      + " on ((type.number = compatibility.type) and (compatibility.s_id = scale.id))" 
+      + " where compatibility.opponent = " + req.params.number 
+      +" order by scale.value desc"
+      + ";";
     //console.log(sql);    // ②
     db.serialize( () => {
         db.all(sql, (error, data) => {
             if( error ) {
+                return res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            df_data = data;
+        })
+    })
+
+    let newsql = "select type.name,scale.value" 
+      + " from type,compatibility inner join scale" 
+      + " on ((type.number = compatibility.opponent) and (compatibility.s_id = scale.id))"
+      + " where compatibility.type = " + req.params.number 
+      +" order by scale.value desc"
+      + ";";
+  
+    db.serialize( () => {
+        db.all(newsql, (error, data) => {
+            if( error ) {
+                return res.render('show', {mes:"エラーです"});
+            }
+            //console.log(data);    // ③
+            at_data = data;
+        })
+    })
+
+    let n_sql = "select name from type"
+      + " where number = " + req.params.number + ";";
+
+    db.serialize( () => {
+        db.all(n_sql, (error, data) => {
+            if( error ) {
                 res.render('show', {mes:"エラーです"});
             }
             //console.log(data);    // ③
-            res.render('type_detail', {data:data});
+            res.render('type_detail', {at_data:at_data,df_data:df_data,type:data[0].name});
         })
     })
 })
