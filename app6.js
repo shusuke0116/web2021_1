@@ -23,8 +23,14 @@ app.get("/pokemon", (req, res) => {
     else order = " order by pokemon.number";
     if( req.query.desc ) desc = " desc";  
     else desc = "";
-    if( req.query.top ) top = " limit " + req.query.top * 2;
-    else top = "";
+    if( req.query.top ) {
+      top = " limit " + req.query.top * 2;
+      limit = req.query.top;
+    }
+    else{
+      top = "";
+      limit = "";
+    } 
     let search = "";
     if( req.query.type ){
       search = " where pokemon.id in("
@@ -81,7 +87,7 @@ app.get("/pokemon", (req, res) => {
                 res.render('show', {mes:"エラーです"});
             }
             //console.log(data);    // ③
-            res.render('pokemon', {data:p_data,types:type,poke:poke,mes:mes});
+            res.render('pokemon', {data:p_data,types:type,poke:poke,mes:mes,limit:limit});
         })
     })
 })
@@ -122,7 +128,7 @@ app.get("/pokemon/detail", (req, res) => {
 })
 
 app.get("/pokemon/detail/:id", (req, res) => {
-    console.log(req.params.id);    // ①
+    //console.log(req.params.id);    // ①
     let p_data;  
     let sql = "select pokemon.id,pokemon.number, pokemon.name,pokemon.attack,pokemon.defence,pokemon.hp,type.name as type" 
       + " from pokemon,pt inner join type on" 

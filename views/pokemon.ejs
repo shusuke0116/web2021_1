@@ -19,7 +19,7 @@
         <input type="radio" name="order" value="id">追加日順
         <input type="checkbox" name="desc" id="desc">
         <label for="desc">降順</label><br>
-        表示数：<input type="number" name="top" id="top" min="1" max="<%= data.length / 2%>">
+        表示数：<input type="number" name="top" id="top" min="1" max="<%= poke.length / 2%>">
         <label for="top"></label><br>
         タイプ：<select name="type">
           <option></option>
@@ -45,7 +45,9 @@
   <% if(mes != ""){ %>
     <%= "検索条件：" + mes %><br>
   <% } %>
-  
+  <% if(limit != ""){ %>
+    <%= "表示数：" + limit %><br>
+  <% } %>
   <table border=1>
       <tr>
         <td></td>
