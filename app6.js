@@ -452,8 +452,6 @@ app.get("/type/page/insert", (req, res) => {
 
 app.post("/type/insert", (req, res) => {
     //console.log(req.body.pop);    // ①
-    let number = req.body.number + ",";
-    let name = "'" + req.body.name + "'";
     let sql = "insert into type (number,name)" 
       + " values (" + req.body.number + "," + "'" + req.body.name + "');";
     //console.log(sql);    // ②
